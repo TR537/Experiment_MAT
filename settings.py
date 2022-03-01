@@ -3,9 +3,21 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
+        name='introduction',
+        display_name="Introduction",
+        app_sequence=['introduction'],
+        num_demo_participants=2,
+    ),
+    dict(
         name='prisoner',
-        display_name="Invest or don't",
-        app_sequence=['prisoner', 'payment_info'],
+        display_name="Simple Decision Task",
+        app_sequence=['prisoner'],
+        num_demo_participants=2,
+    ),
+    dict(
+        name='taxed',
+        display_name="Simple Decision Task 2",
+        app_sequence=['taxed'],
         num_demo_participants=2,
     ),
     dict(
@@ -53,4 +65,4 @@ Here are some oTree games.
 
 SECRET_KEY = '4143000320156'
 
-INSTALLED_APPS = ['otree']
+INSTALLED_APPS = ['otree', 'otreeutils']

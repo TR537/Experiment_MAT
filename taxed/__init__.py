@@ -2,19 +2,19 @@ from otree.api import *
 
 
 doc = """
-This is a repeated PD game. z=100, r=0.2
+This is the PD game with a tax for not cooperating.
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'prisoner'
+    NAME_IN_URL = 'decision_2'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 5
-    INSTRUCTIONS_TEMPLATE = 'prisoner/instructions.html'
-    PAYOFF_A = cu(160)
+    INSTRUCTIONS_TEMPLATE = 'taxed/instructions.html'
+    PAYOFF_A = cu(110)
     PAYOFF_B = cu(120)
     PAYOFF_C = cu(100)
-    PAYOFF_D = cu(60)
+    PAYOFF_D = cu(110)
 
 
 class Subsession(BaseSubsession):

@@ -2,19 +2,21 @@ from otree.api import *
 
 
 doc = """
-This is a repeated PD game. z=100, r=0.2
+This is a one-shot "Prisoner's Dilemma". Two players are asked separately
+whether they want to cooperate or defect. Their choices directly determine the
+payoffs.
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'prisoner'
+    NAME_IN_URL = 'introduction'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 5
-    INSTRUCTIONS_TEMPLATE = 'prisoner/instructions.html'
-    PAYOFF_A = cu(160)
-    PAYOFF_B = cu(120)
+    NUM_ROUNDS = 1
+    INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
+    PAYOFF_A = cu(300)
+    PAYOFF_B = cu(200)
     PAYOFF_C = cu(100)
-    PAYOFF_D = cu(60)
+    PAYOFF_D = cu(0)
 
 
 class Subsession(BaseSubsession):
@@ -27,7 +29,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     cooperate = models.BooleanField(
-        choices=[[True, 'A'], [False, 'B']],
+        choices=[[True, 'Cooperate'], [False, 'Defect']],
         doc="""This player's decision""",
         widget=widgets.RadioSelect,
     )
@@ -80,4 +82,4 @@ class Results(Page):
         )
 
 
-page_sequence = [Decision, ResultsWaitPage, Results]
+page_sequence = [Introduction]
