@@ -15,7 +15,7 @@
     <p><i>
         In each cell you get the payoff that is written.
         The rows are your actions and the columns are your opponents actions.
-        So if you chose A and your opponent chose B, you'd get {{C.PAYOFF_D}}.
+        So if you chose A and your opponent chose B, you'd get {{group.payoff_Icoop}}.
         The game is symmetric. This means your opponent is presented with an identical payoff table.
     </i></p>
 
@@ -32,13 +32,13 @@
         <tr>
             <th rowspan=2><span style="transform: rotate(-90deg);">You</span></th>
             <th>A</th>
-            <td>{{ C.PAYOFF_B }}</td>
-            <td>{{ C.PAYOFF_D }}</td>
+            <td>{{ group.payoff_both_coop }}</td>
+            <td>{{ group.payoff_Icoop }}</td>
         </tr>
         <tr>
             <th>B</th>
-            <td>{{ C.PAYOFF_A }}</td>
-            <td>{{ C.PAYOFF_C }}</td>
+            <td>{{ group.payoff_Idef }}</td>
+            <td>{{ group.payoff_both_defect }}</td>
         </tr>
     </table>
 

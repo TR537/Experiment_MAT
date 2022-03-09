@@ -3,22 +3,22 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='introduction',
-        display_name="Introduction",
-        app_sequence=['introduction'],
-        num_demo_participants=2,
+        name='all_in_one',
+        display_name="All in one",
+        app_sequence=['introduction', 'prisoner', 'taxed', 'survey', 'payment_info'],
+        num_demo_participants=4,
     ),
     dict(
         name='prisoner',
-        display_name="Simple Decision Task",
+        display_name="Prisoner Game",
         app_sequence=['prisoner'],
         num_demo_participants=2,
     ),
     dict(
         name='taxed',
-        display_name="Simple Decision Task 2",
+        display_name="Taxed Game",
         app_sequence=['taxed'],
-        num_demo_participants=2,
+        num_demo_participants=4,
     ),
     dict(
         name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=2
@@ -34,7 +34,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = []
+PARTICIPANT_FIELDS = ['treatment']
 SESSION_FIELDS = []
 
 # ISO-639 code
