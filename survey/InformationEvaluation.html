@@ -1,43 +1,32 @@
 {{ block title }}Additional Information{{ endblock }}
 {{ block content }}
+
+    <p>
+        Thank you for answering the questions. You have now {{timeout_seconds}} seconds to read the feedback to your answers.
+        After the timer runs out, you will be redirected to the next page automatically.
+    </p>
+
      <p>
         {{ if correct1 and correct2 and correct3 }}
             <b>Your answers are correct.</b>
             <p>
             Here are some explanations for why they were correct.
-            Please read them. You can then go to the next page.
             </p>
 
             <p> <b> Question 1 </b> </p>
-            <p> The first answer is wrong because people tend to underprovide a public good.
-                The third answer is wrong because a public good is generally automatically consumed
-                (e.g. public defence is always consumed by any resident). The second statement is correct
-                since this is the free-riding problem that was discussed in the text. I.e. people get a benefit from
-                other people investing regardless of their own contribution.
+            <p> {{explanation1}}
             </p>
             <p> <b> Question 2 </b> </p>
-            <p> The first answer is wrong because healthcare can be privately organized.
-                For example, the US has a private healthcare system. Public health on the other hand is a public good
-                since every citizen profits from a higher health standard in a nation. The third statement is also wrong
-                since cars can be privately owned and they only provide use to the owner.
-                Environmental Policies on the other hand are useful to everybody that would be affected
-                from the consequences of not having them in place.
-                For example, if there was a world-wide subsidy to use green energy,
-                everybody would profit from less green-house-gas emissions. Therefore, the second statement is correct.
+            <p> {{explanation2}}
             </p>
             <p> <b> Question 3 </b> </p>
-            <p> The second answer is wrong. While putting people into jail who do not contribute might be very effective,
-                it would also be very difficult to implement in any democratic state.
-                The third answer is also wrong since even the more conservative anti-tax economists agree
-                that in public goods markets there is a market-failure that has to be corrected through the use of a tax
-                or a subsidy (from an economic standpoint subsidies and taxes are equivalent instruments).
-                Therefore, taxation is currently the best option to make people provide public goods.
+            <p> {{explanation3}}
             </p>
 
         {{ else }}
             <b>You did not answer all questions correctly.</b>
             <p>
-            Please read the following explanations as to why you answered wrongfully:
+            Please read the following explanations as to why your answers were wrong:
             </p>
 
             <p>
@@ -48,11 +37,7 @@
                     wrong.
                 {{ endif }}</b>
             <p>
-            The first answer is wrong because people tend to underprovide a public good.
-            The third answer is wrong because a public good is generally automatically consumed
-            (e.g. public defence is always consumed by any resident). The second statement is correct
-            since this is the free-riding problem that was discussed in the text. I.e. people get a benefit from
-            other people investing regardless of their own contribution.
+            {{explanation1}}
             </p>
             </p>
             <p>
@@ -63,14 +48,7 @@
                     wrong.
                 {{ endif }}</b>
             <p>
-            The first answer is wrong because healthcare can be privately organized.
-            For example, the US has a private healthcare system. Public health on the other hand is a public good
-            since every citizen profits from a higher health standard in a nation. The third statement is also wrong
-            since cars can be privately owned and they only provide use to the owner.
-            Environmental Policies on the other hand are useful to everybody that would be affected
-            from the consequences of not having them in place.
-            For example, if there was a world-wide subsidy to use green energy,
-            everybody would profit from less green-house-gas emissions. Therefore, the second statement is correct.
+            {{explanation2}}
             </p>
             </p>
             <p>
@@ -81,17 +59,12 @@
                     wrong.
                 {{ endif }}</b>
             <p>
-            The second answer is wrong. While putting people into jail who do not contribute might be very effective,
-            it would also be very difficult to implement in any democratic state.
-            The third answer is also wrong since even the more conservative anti-tax economists agree
-            that in public goods markets there is a market-failure that has to be corrected through the use of a tax
-            or a subsidy (from an economic standpoint subsidies and taxes are equivalent instruments).
-            Therefore, taxation is currently the best option to make people provide public goods.
+            {{explanation3}}
             </p>
             </p>
         {{ endif }}
     </p>
 
-{{ next_button }}
+<!--{{ next_button }}-->
 
 {{ endblock }}

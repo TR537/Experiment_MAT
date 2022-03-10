@@ -94,4 +94,4 @@ class Results(Page):
         )
 
 
-page_sequence = [Decision, ResultsWaitPage, Results]
+page_sequence = [Introduction, Decision, ResultsWaitPage, Results]

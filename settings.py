@@ -31,7 +31,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=0.00, doc="",
+    real_world_currency_per_point=0.001, participation_fee=3.00, doc="",
         mturk_hit_settings=dict(
             keywords='bonus, study, experiment, decision',
             title='Decision task against opponent - earn about $5 in 20 minutes',
@@ -40,7 +40,27 @@ SESSION_CONFIG_DEFAULTS = dict(
             template='global/mturk_template.html',
             minutes_allotted_per_assignment=60,
             expiration_hours=7 * 24,
-            qualification_requirements=[]
+            qualification_requirements=[
+                {
+                    'QualificationTypeId': "00000000000000000040", # Worker_NumberHITsApproved
+                    'Comparator': "GreaterThanOrEqualTo",
+                    'IntegerValues': [500]
+                },
+                {
+                    'QualificationTypeId': "000000000000000000L0", # Worker_PercentAssignmentsApproved
+                    'Comparator': "GreaterThanOrEqualTo",
+                    'IntegerValues': [99]
+                },
+                {
+                    'QualificationTypeId': "00000000000000000071", # Worker_Locale (US only)
+                    'Comparator': "EqualTo",
+                    'LocaleValues': [{'Country': "US"}]
+                },
+                {
+                    'QualificationTypeId': "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH", # Masters
+                    'Comparator': "Exists",
+                },
+            ]
             # grant_qualification_id='YOUR_QUALIFICATION_ID_HERE', # to prevent retakes
 ),
 )

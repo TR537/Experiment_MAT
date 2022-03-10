@@ -292,12 +292,33 @@ class Demographics(Page):
 
 class InformationEvaluation(Page):
     form_model = 'player'
+    timeout_seconds = 90
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
             correct1=player.inf_prov1,
             correct2=player.inf_prov2,
             correct3=player.inf_prov3,
+            timeout_seconds=InformationEvaluation.timeout_seconds,
+            explanation1='''The first answer is wrong because people tend to underprovide a public good.
+                The third answer is wrong because a public good is generally automatically consumed
+                (e.g. public defence is always consumed by any resident). The second statement is correct
+                since this is the free-riding problem that was discussed in the text. I.e. people get a benefit from
+                other people investing regardless of their own contribution.''',
+            explanation2='''The first answer is wrong because healthcare can be privately organized.
+                For example, the US has a private healthcare system. Public health on the other hand is a public good
+                since every citizen profits from a higher health standard in a nation. The third statement is also wrong
+                since cars can be privately owned and they only provide use to the owner.
+                Environmental Policies on the other hand are useful to everybody that would be affected
+                from the consequences of not having them in place.
+                For example, if there was a world-wide subsidy to use green energy,
+                everybody would profit from less green-house-gas emissions. Therefore, the second statement is correct.''',
+            explanation3='''The second answer is wrong. While putting people into jail who do not contribute might be very effective,
+                it would also be very difficult to implement in any democratic state.
+                The third answer is also wrong since even the more conservative anti-tax economists agree
+                that in public goods markets there is a market-failure that has to be corrected through the use of a tax
+                or a subsidy (from an economic standpoint subsidies and taxes are equivalent instruments).
+                Therefore, taxation is currently the best option to make people provide public goods.''',
         )
 
 page_sequence = [InformationIntervention, InformationEvaluation, Survey, Demographics]
