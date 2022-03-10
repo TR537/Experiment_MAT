@@ -33,9 +33,9 @@ SESSION_CONFIGS = [
 SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc="",
         mturk_hit_settings=dict(
-            keywords='bonus, study',
-            title='Title for your experiment',
-            description='Description for your experiment',
+            keywords='bonus, study, experiment, decision',
+            title='Decision task against opponent - earn about $5 in 20 minutes',
+            description='In this study you will take part in an online multiplayer decision task. $3 for sure, plus bonus. Expected to take 20 minutes',
             frame_height=500,
             template='global/mturk_template.html',
             minutes_allotted_per_assignment=60,
