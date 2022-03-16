@@ -9,7 +9,8 @@ This is the PD game with a tax for not cooperating.
 class C(BaseConstants):
     NAME_IN_URL = 'decision_2'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 5
+    NUM_ROUNDS = 50
+    STOPPING_PROBABILITY = 0.4
     INSTRUCTIONS_TEMPLATE = 'taxed/instructions.html'
     z = 120
     r = 0.2
@@ -50,6 +51,8 @@ def creating_session(subsession):
         group.payoff_both_defect = cu(C.z)
         group.payoff_Icoop = cu(0.5 * (1 + C.r) * C.z + group.t)
         group.payoff_Idef = cu(C.z + 0.5 * (1 + C.r) * C.z - group.t)
+    for p in subsession.get_players():
+        p.participant.finished_rounds = False
 
 def set_payoffs(group: Group):
     for p in group.get_players():
@@ -70,7 +73,7 @@ def set_payoff(player: Player, group: Group):
 
 # PAGES
 class Introduction(Page):
-    timeout_seconds = 100
+    timeout_seconds = 120
 
 
 class Decision(Page):
@@ -79,10 +82,22 @@ class Decision(Page):
 
 
 class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoffs
+    @staticmethod
+    def after_all_players_arrive(group: Group):
+        import random
 
+        if random.random() < C.STOPPING_PROBABILITY:
+            print('ending game')
+            for p in group.get_players():
+                p.participant.finished_rounds = True
+        set_payoffs(group)
 
 class Results(Page):
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
+        participant = player.participant
+        if participant.finished_rounds:
+            return upcoming_apps[0]
     @staticmethod
     def vars_for_template(player: Player):
         opponent = other_player(player)
@@ -94,4 +109,4 @@ class Results(Page):
         )
 
 
-page_sequence = [Introduction, Decision, ResultsWaitPage, Results]
+page_sequence = [Decision, ResultsWaitPage, Results]

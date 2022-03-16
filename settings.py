@@ -5,7 +5,7 @@ SESSION_CONFIGS = [
     dict(
         name='all_in_one',
         display_name="All in one",
-        app_sequence=['introduction', 'prisoner', 'taxed', 'survey', 'payment_info'],
+        app_sequence=['introduction', 'prisoner', 'introduction_taxed', 'taxed', 'survey', 'payment_info'],
         num_demo_participants=4,
     ),
     dict(
@@ -65,7 +65,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 ),
 )
 
-PARTICIPANT_FIELDS = ['treatment']
+PARTICIPANT_FIELDS = ['treatment', 'finished_rounds']
 SESSION_FIELDS = []
 
 # ISO-639 code

@@ -5,6 +5,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'survey'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
+    WAIT_TIME = 90
 
 
 class Subsession(BaseSubsession):
@@ -16,6 +17,8 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    # Timer value
+    page_pass_time = models.FloatField()
     # Information Provision
     inf_prov1 = models.BooleanField(
         choices=[[False,
@@ -37,8 +40,7 @@ class Player(BasePlayer):
     inf_prov3 = models.BooleanField(
         choices=[[True, "Taxing people who are not willing to contribute."],
                  [False, "Putting people in jail if they do not contribute."],
-                 [False,
-                  "Not doing anything, the market usually finds its equilibrium. Therefore, any level of provision is actually optimal already."]
+                 [False, "Not doing anything, the market usually finds its equilibrium. Therefore, any level of provision is actually optimal already."]
                  ],
         label='How can public good provision be improved in real-world applications?',
         widget=widgets.RadioSelect,
@@ -281,25 +283,20 @@ class Player(BasePlayer):
 class InformationIntervention(Page):
     form_model = 'player'
     form_fields = ['inf_prov1', 'inf_prov2', 'inf_prov3']
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        import time
+        player.page_pass_time = time.time() + C.WAIT_TIME
 
-class Survey(Page):
-    form_model = 'player'
-    form_fields = ['pol_def', 'pol_def_wtp', 'att_check1', 'climate_wtp_tax', 'pol_terror', 'pol_terror_wtp', 'pol_poor', 'climate_gov', 'pol_health', 'pol_health_wtp', 'pol_blkaid', 'att_check2', 'climate_wtp_gas', 'pol_adopt', 'pol_imm', 'pol_guns', 'pol_interest', 'pol_party', 'hyp']
-
-class Demographics(Page):
-    form_model = 'player'
-    form_fields = ['age', 'gender', 'residence', 'education']
 
 class InformationEvaluation(Page):
     form_model = 'player'
-    timeout_seconds = 90
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
             correct1=player.inf_prov1,
             correct2=player.inf_prov2,
             correct3=player.inf_prov3,
-            timeout_seconds=InformationEvaluation.timeout_seconds,
             explanation1='''The first answer is wrong because people tend to underprovide a public good.
                 The third answer is wrong because a public good is generally automatically consumed
                 (e.g. public defence is always consumed by any resident). The second statement is correct
@@ -320,5 +317,19 @@ class InformationEvaluation(Page):
                 or a subsidy (from an economic standpoint subsidies and taxes are equivalent instruments).
                 Therefore, taxation is currently the best option to make people provide public goods.''',
         )
+    @staticmethod
+    def error_message(player: Player, values):
+        import time
+        wait_time_error = round(player.page_pass_time - time.time())
+        if time.time() < player.page_pass_time:
+            return "You cannot pass this page yet. You have to wait another {} seconds".format(wait_time_error)
+
+class Survey(Page):
+    form_model = 'player'
+    form_fields = ['pol_def', 'pol_def_wtp', 'att_check1', 'climate_wtp_tax', 'pol_terror', 'pol_terror_wtp', 'pol_poor', 'climate_gov', 'pol_health', 'pol_health_wtp', 'pol_blkaid', 'att_check2', 'climate_wtp_gas', 'pol_adopt', 'pol_imm', 'pol_guns', 'pol_interest', 'pol_party', 'hyp']
+
+class Demographics(Page):
+    form_model = 'player'
+    form_fields = ['age', 'gender', 'residence', 'education']
 
 page_sequence = [InformationIntervention, InformationEvaluation, Survey, Demographics]

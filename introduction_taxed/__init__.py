@@ -2,24 +2,26 @@ from otree.api import *
 
 
 doc = """
-This is a repeated PD game
+This is a one-shot "Prisoner's Dilemma". Two players are asked separately
+whether they want to cooperate or defect. Their choices directly determine the
+payoffs.
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'decision_1'
+    NAME_IN_URL = 'introduction2'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 5
-    INSTRUCTIONS_TEMPLATE = 'prisoner/instructions.html'
-    z = 100 # initial endowment
-    r = 0.2 # interest on investing
-    payoff_Idef = cu(z + 0.5 * (1 + r) * z) # A
-    payoff_both_coop = cu((1 + r) * z) # B
-    payoff_both_defect = cu(z) # C
-    payoff_Icoop = cu(0.5 * (1 + r) * z) # D
+    NUM_ROUNDS = 1
+    INSTRUCTIONS_TEMPLATE = 'introduction_taxed/instructions.html'
+    PAYOFF_A = cu(300)
+    PAYOFF_B = cu(200)
+    PAYOFF_C = cu(100)
+    PAYOFF_D = cu(0)
+
 
 class Subsession(BaseSubsession):
     pass
+
 
 class Group(BaseGroup):
     pass
@@ -27,7 +29,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     cooperate = models.BooleanField(
-        choices=[[True, 'A'], [False, 'B']],
+        choices=[[True, 'Cooperate'], [False, 'Defect']],
         doc="""This player's decision""",
         widget=widgets.RadioSelect,
     )
@@ -38,16 +40,17 @@ def set_payoffs(group: Group):
     for p in group.get_players():
         set_payoff(p)
 
+
 def other_player(player: Player):
     return player.get_others_in_group()[0]
 
 
 def set_payoff(player: Player):
     payoff_matrix = {
-        (False, True): C.payoff_Idef,
-        (True, True): C.payoff_both_coop,
-        (False, False): C.payoff_both_defect,
-        (True, False): C.payoff_Icoop,
+        (False, True): C.PAYOFF_A,
+        (True, True): C.PAYOFF_B,
+        (False, False): C.PAYOFF_C,
+        (True, False): C.PAYOFF_D,
     }
     other = other_player(player)
     player.payoff = payoff_matrix[(player.cooperate, other.cooperate)]
@@ -55,7 +58,7 @@ def set_payoff(player: Player):
 
 # PAGES
 class Introduction(Page):
-    timeout_seconds = 100
+    pass
 
 
 class Decision(Page):
@@ -79,4 +82,4 @@ class Results(Page):
         )
 
 
-page_sequence = [Decision, ResultsWaitPage, Results]
+page_sequence = [Introduction]

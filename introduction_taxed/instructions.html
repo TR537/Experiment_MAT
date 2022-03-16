@@ -1,0 +1,50 @@
+<div class="card bg-light m-3">
+    <div class="card-body">
+
+    <h3>
+        Instructions
+    </h3>
+
+    <p>
+        In this study, you will be randomly and anonymously paired with another
+        participant.
+        Each of you simultaneously and privately chooses between two actions. Action A or B.
+        <b>The payoffs can change any time, so pay attention to the table.</b>
+        Your payoffs will be determined by as below:
+    </p>
+    <p><i>
+        In each cell you get the payoff that is written.
+        The rows are your actions and the columns are your opponents actions.
+        So if you chose A and your opponent chose B, you'd get {{C.PAYOFF_D}}.
+        The game is symmetric. This means your opponent is presented with an identical payoff table.
+    </i></p>
+
+    <table class='table table-bordered text-center'
+           style='width: auto; margin: auto'>
+        <tr>
+            <th colspan=2 rowspan=2></th>
+            <th colspan=2>The Other Participant</th>
+        </tr>
+        <tr>
+            <th>A</th>
+            <th>B</th>
+        </tr>
+        <tr>
+            <th rowspan=2><span style="transform: rotate(-90deg);">You</span></th>
+            <th>A</th>
+            <td>{{ C.PAYOFF_B }}</td>
+            <td>{{ C.PAYOFF_D }}</td>
+        </tr>
+        <tr>
+            <th>B</th>
+            <td>{{ C.PAYOFF_A }}</td>
+            <td>{{ C.PAYOFF_C }}</td>
+        </tr>
+    </table>
+
+    <p>
+        The instructions will be listed below the game, so you are always to re-read them if necessary.
+    </p>
+
+</div>
+</div>
