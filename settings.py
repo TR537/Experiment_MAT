@@ -66,7 +66,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 )
 
 PARTICIPANT_FIELDS = ['treatment', 'finished_rounds']
-SESSION_FIELDS = []
+SESSION_FIELDS = ['cont_prob_percent']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans

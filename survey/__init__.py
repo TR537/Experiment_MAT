@@ -21,8 +21,7 @@ class Player(BasePlayer):
     page_pass_time = models.FloatField()
     # Information Provision
     inf_prov1 = models.BooleanField(
-        choices=[[False,
-                  "There are usually too many funds and the excess money has to be redistributed which is a bureaucratic hassle."],
+        choices=[[False, "There are usually too many funds and the excess money has to be redistributed which is a bureaucratic hassle."],
                  [True, "People can profit from other people's investment without investing themselves."],
                  [False, "It is hard to distribute the public good to everybody."]
                  ],
@@ -113,7 +112,7 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
     )
     pol_health_wtp = models.IntegerField(
-        label='How much of your current household income would you be willing to pay towards universal healthcare in the US? Please enter a percentage between 0 and 100:',
+        label='How much of your current household income would you be willing to pay in order to implement government regulated universal healthcare? Please enter a percentage between 0 and 100:',
         min=0,
         max=100
     )
@@ -275,11 +274,9 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
     )
 
-
-
 # FUNCTIONS
-# PAGES
 
+# PAGES
 class InformationIntervention(Page):
     form_model = 'player'
     form_fields = ['inf_prov1', 'inf_prov2', 'inf_prov3']

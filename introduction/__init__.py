@@ -18,7 +18,6 @@ class C(BaseConstants):
     PAYOFF_C = cu(100)
     PAYOFF_D = cu(0)
 
-
 class Subsession(BaseSubsession):
     pass
 
@@ -36,6 +35,10 @@ class Player(BasePlayer):
 
 
 # FUNCTIONS
+def creating_session(subsession):
+    session = subsession.session
+    session.cont_prob_percent = 70
+
 def set_payoffs(group: Group):
     for p in group.get_players():
         set_payoff(p)

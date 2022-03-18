@@ -17,6 +17,8 @@ class C(BaseConstants):
     payoff_both_coop = cu((1 + r) * z) # B
     payoff_both_defect = cu(z) # C
     payoff_Icoop = cu(0.5 * (1 + r) * z) # D
+    delta_min = (1-r)/(1+r)
+    delta_risk_dom_min = 1-r
 
 class Subsession(BaseSubsession):
     pass

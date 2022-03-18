@@ -10,10 +10,11 @@ class C(BaseConstants):
     NAME_IN_URL = 'decision_2'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 50
-    STOPPING_PROBABILITY = 0.4
     INSTRUCTIONS_TEMPLATE = 'taxed/instructions.html'
     z = 120
     r = 0.2
+    delta_min = (1 - r) / (1 + r)
+    delta_risk_dom_min = 1 - r
 
 class Subsession(BaseSubsession):
     pass
@@ -85,9 +86,7 @@ class ResultsWaitPage(WaitPage):
     @staticmethod
     def after_all_players_arrive(group: Group):
         import random
-
-        if random.random() < C.STOPPING_PROBABILITY:
-            print('ending game')
+        if random.random() > (group.session.cont_prob_percent / 100):
             for p in group.get_players():
                 p.participant.finished_rounds = True
         set_payoffs(group)
