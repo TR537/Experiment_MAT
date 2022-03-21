@@ -1,6 +1,8 @@
 {{ block title }}Your Choice{{ endblock }}
 {{ block content }}
 
+    {{if participant.treatment}}
+
     <div class="form-group required">
         <table class="table table-bordered text-center" style="width: auto; margin: auto">
             <tr>
@@ -14,16 +16,44 @@
             <tr>
                 <th rowspan="2"><span>You</span></th>
                 <td><button name="cooperate" value="True" class="btn btn-primary btn-large">A</button></td>
-                <td>{{group.payoff_both_coop}}</td>
-                <td>{{ group.payoff_Icoop }}</td>
+                <td>{{C.payoff_both_coop}}</td>
+                <td>{{ C.payoff_Icoop_treat }}</td>
             </tr>
             <tr>
                 <td><button name="cooperate" value="False" class="btn btn-primary btn-large">B</button></td>
-                <td>{{group.payoff_Idef}}</td>
-                <td>{{group.payoff_both_defect}}</td>
+                <td>{{C.payoff_Idef_treat}}</td>
+                <td>{{C.payoff_both_defect}}</td>
             </tr>
         </table>
     </div>
+
+    {{else if not participant.treatment}}
+
+    <div class="form-group required">
+        <table class="table table-bordered text-center" style="width: auto; margin: auto">
+            <tr>
+                <th colspan="2" rowspan="2"></th>
+                <th colspan="2">The Other Participant</th>
+            </tr>
+            <tr>
+                <th>A</th>
+                <th>B</th>
+            </tr>
+            <tr>
+                <th rowspan="2"><span>You</span></th>
+                <td><button name="cooperate" value="True" class="btn btn-primary btn-large">A</button></td>
+                <td>{{C.payoff_both_coop}}</td>
+                <td>{{ C.payoff_Icoop_cont }}</td>
+            </tr>
+            <tr>
+                <td><button name="cooperate" value="False" class="btn btn-primary btn-large">B</button></td>
+                <td>{{C.payoff_Idef_cont}}</td>
+                <td>{{C.payoff_both_defect}}</td>
+            </tr>
+        </table>
+    </div>
+
+    {{endif}}
 
     {{ include C.INSTRUCTIONS_TEMPLATE }}
 

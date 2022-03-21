@@ -9,14 +9,10 @@ payoffs.
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'introduction2'
+    NAME_IN_URL = 'newpayoffs'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
-    INSTRUCTIONS_TEMPLATE = 'introduction_taxed/instructions.html'
-    PAYOFF_A = cu(300)
-    PAYOFF_B = cu(200)
-    PAYOFF_C = cu(100)
-    PAYOFF_D = cu(0)
+    INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
 
 
 class Subsession(BaseSubsession):
@@ -28,58 +24,21 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    cooperate = models.BooleanField(
-        choices=[[True, 'Cooperate'], [False, 'Defect']],
-        doc="""This player's decision""",
-        widget=widgets.RadioSelect,
-    )
-
-
-# FUNCTIONS
-def set_payoffs(group: Group):
-    for p in group.get_players():
-        set_payoff(p)
-
-
-def other_player(player: Player):
-    return player.get_others_in_group()[0]
-
-
-def set_payoff(player: Player):
-    payoff_matrix = {
-        (False, True): C.PAYOFF_A,
-        (True, True): C.PAYOFF_B,
-        (False, False): C.PAYOFF_C,
-        (True, False): C.PAYOFF_D,
-    }
-    other = other_player(player)
-    player.payoff = payoff_matrix[(player.cooperate, other.cooperate)]
-
-
-# PAGES
-class Introduction(Page):
     pass
 
 
-class Decision(Page):
-    form_model = 'player'
-    form_fields = ['cooperate']
+# FUNCTIONS
 
-
-class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoffs
-
-
-class Results(Page):
+# PAGES
+class Introduction(Page):
     @staticmethod
-    def vars_for_template(player: Player):
-        opponent = other_player(player)
-        return dict(
-            opponent=opponent,
-            same_choice=player.cooperate == opponent.cooperate,
-            my_decision=player.field_display('cooperate'),
-            opponent_decision=opponent.field_display('cooperate'),
-        )
+    def get_timeout_seconds(player):
+        participant = player.participant
+
+        if participant.is_dropout:
+            return 0.1  # instant timeout, 0.1 seconds
+        else:
+            return 60
 
 
 page_sequence = [Introduction]

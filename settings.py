@@ -8,21 +8,6 @@ SESSION_CONFIGS = [
         app_sequence=['introduction', 'prisoner', 'introduction_taxed', 'taxed', 'survey', 'payment_info'],
         num_demo_participants=4,
     ),
-    dict(
-        name='prisoner',
-        display_name="Prisoner Game",
-        app_sequence=['prisoner'],
-        num_demo_participants=2,
-    ),
-    dict(
-        name='taxed',
-        display_name="Taxed Game",
-        app_sequence=['taxed'],
-        num_demo_participants=4,
-    ),
-    dict(
-        name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=2
-    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
@@ -31,7 +16,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=0.001, participation_fee=3.00, doc="",
+    real_world_currency_per_point=0.001, participation_fee=2.00, doc="",
         mturk_hit_settings=dict(
             keywords='bonus, study, experiment, decision',
             title='Decision task against opponent - earn about $5 in 20 minutes',
@@ -65,8 +50,8 @@ SESSION_CONFIG_DEFAULTS = dict(
 ),
 )
 
-PARTICIPANT_FIELDS = ['treatment', 'finished_rounds']
-SESSION_FIELDS = ['cont_prob_percent']
+PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'is_dropout', 'past_group_id']
+SESSION_FIELDS = ['cont_prob_percent', 'payoff_Idef', 'payoff_both_coop', 'payoff_both_defect', 'payoff_Icoop', 'min_time']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans

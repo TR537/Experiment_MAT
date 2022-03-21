@@ -10,13 +10,9 @@ payoffs.
 
 class C(BaseConstants):
     NAME_IN_URL = 'introduction'
-    PLAYERS_PER_GROUP = 2
+    PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
     INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
-    PAYOFF_A = cu(300)
-    PAYOFF_B = cu(200)
-    PAYOFF_C = cu(100)
-    PAYOFF_D = cu(0)
 
 class Subsession(BaseSubsession):
     pass
@@ -27,62 +23,25 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    cooperate = models.BooleanField(
-        choices=[[True, 'Cooperate'], [False, 'Defect']],
-        doc="""This player's decision""",
-        widget=widgets.RadioSelect,
-    )
+    pass
 
 
 # FUNCTIONS
 def creating_session(subsession):
     session = subsession.session
-    session.cont_prob_percent = 70
+    session.cont_prob_percent = 85
+    for p in subsession.get_players():
+        p.participant.is_dropout = False
 
-def set_payoffs(group: Group):
-    for p in group.get_players():
-        set_payoff(p)
+    session.payoff_Idef = cu(300)  # A
+    session.payoff_both_coop = cu(200)  # B
+    session.payoff_both_defect = cu(100)  # C
+    session.payoff_Icoop = cu(0)  # D
 
-
-def other_player(player: Player):
-    return player.get_others_in_group()[0]
-
-
-def set_payoff(player: Player):
-    payoff_matrix = {
-        (False, True): C.PAYOFF_A,
-        (True, True): C.PAYOFF_B,
-        (False, False): C.PAYOFF_C,
-        (True, False): C.PAYOFF_D,
-    }
-    other = other_player(player)
-    player.payoff = payoff_matrix[(player.cooperate, other.cooperate)]
-
+    session.min_time = 30
 
 # PAGES
 class Introduction(Page):
-    timeout_seconds = 120
-
-
-class Decision(Page):
-    form_model = 'player'
-    form_fields = ['cooperate']
-
-
-class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoffs
-
-
-class Results(Page):
-    @staticmethod
-    def vars_for_template(player: Player):
-        opponent = other_player(player)
-        return dict(
-            opponent=opponent,
-            same_choice=player.cooperate == opponent.cooperate,
-            my_decision=player.field_display('cooperate'),
-            opponent_decision=opponent.field_display('cooperate'),
-        )
-
+    pass
 
 page_sequence = [Introduction]

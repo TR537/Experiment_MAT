@@ -9,23 +9,35 @@ This is the PD game with a tax for not cooperating.
 class C(BaseConstants):
     NAME_IN_URL = 'decision_2'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 50
-    INSTRUCTIONS_TEMPLATE = 'taxed/instructions.html'
-    z = 120
-    r = 0.2
+    NUM_ROUNDS = 30
+    INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
+    z = 250
+    r = 0.1
+    t = int(0.5 * z)
+    # Same Payoffs:
+    payoff_both_coop = cu((1 + r) * z)  # B
+    payoff_both_defect = cu(z)  # C
+
+    # Payoffs for control group:
+    payoff_Idef_cont = cu(z + 0.5 * (1 + r) * z)  # A
+    payoff_Icoop_cont = cu(0.5 * (1 + r) * z)  # D
+
+    # Payoffs for treatment group:
+    payoff_Idef_treat = cu(z + 0.5 * (1 + r) * z - t)  # A
+    payoff_Icoop_treat = cu(0.5 * (1 + r) * z + t)  # D
+
+    # Deltas
     delta_min = (1 - r) / (1 + r)
     delta_risk_dom_min = 1 - r
 
+    # Treatments
+    TREATMENTS = [True, False]
+
 class Subsession(BaseSubsession):
-    pass
+    num_groups_created = models.IntegerField(initial=0)
 
 class Group(BaseGroup):
-    treatment = models.BooleanField()
-    payoff_both_coop = models.CurrencyField()
-    payoff_both_defect = models.CurrencyField()
-    payoff_Icoop = models.CurrencyField()
-    payoff_Idef = models.CurrencyField()
-    t = models.IntegerField(initial=0)
+    pass
 
 class Player(BasePlayer):
     cooperate = models.BooleanField(
@@ -33,27 +45,6 @@ class Player(BasePlayer):
         doc="""This player's decision""",
         widget=widgets.RadioSelect,
     )
-
-# FUNCTIONS
-def creating_session(subsession):
-    import itertools
-    treatments = itertools.cycle([True, False])
-    for group in subsession.get_groups():
-        if subsession.round_number == 1:
-            group.treatment = next(treatments)
-            players = group.get_players()
-            for p in players:
-                p.participant.treatment = group.treatment
-        else:
-            group.treatment = group.in_round(1).treatment
-        if group.treatment:
-            group.t = int(0.5 * C.z)
-        group.payoff_both_coop = cu((1 + C.r) * C.z)
-        group.payoff_both_defect = cu(C.z)
-        group.payoff_Icoop = cu(0.5 * (1 + C.r) * C.z + group.t)
-        group.payoff_Idef = cu(C.z + 0.5 * (1 + C.r) * C.z - group.t)
-    for p in subsession.get_players():
-        p.participant.finished_rounds = False
 
 def set_payoffs(group: Group):
     for p in group.get_players():
@@ -63,23 +54,93 @@ def other_player(player: Player):
     return player.get_others_in_group()[0]
 
 def set_payoff(player: Player, group: Group):
-    payoff_matrix = {
-        (False, True): group.payoff_Idef,
-        (True, True): group.payoff_both_coop,
-        (False, False): group.payoff_both_defect,
-        (True, False): group.payoff_Icoop,
+    payoff_matrix_cont = {
+        (False, True): C.payoff_Idef_cont,
+        (True, True): C.payoff_both_coop,
+        (False, False): C.payoff_both_defect,
+        (True, False): C.payoff_Icoop_cont,
+    }
+    payoff_matrix_treat = {
+        (False, True): C.payoff_Idef_treat,
+        (True, True): C.payoff_both_coop,
+        (False, False): C.payoff_both_defect,
+        (True, False): C.payoff_Icoop_treat,
     }
     other = other_player(player)
-    player.payoff = payoff_matrix[(player.cooperate, other.cooperate)]
+    if player.participant.treatment:
+        player.payoff = payoff_matrix_treat[(player.cooperate, other.cooperate)]
+    else:
+        player.payoff = payoff_matrix_cont[(player.cooperate, other.cooperate)]
+
+def group_by_arrival_time_method(subsession: Subsession, waiting_players):
+    # we now place users into different baskets, according to their group in the previous app.
+    # the dict 'd' will contain all these baskets.
+    d = {}
+    for p in waiting_players:
+        group_id = p.participant.past_group_id
+        if group_id not in d:
+            # since 'd' is initially empty, we need to initialize an empty list (basket)
+            # each time we see a new group ID.
+            d[group_id] = []
+        players_in_my_group = d[group_id]
+        players_in_my_group.append(p)
+        if len(players_in_my_group) == 2:
+            return players_in_my_group
+        # print('d is', d)
 
 # PAGES
-class Introduction(Page):
-    timeout_seconds = 120
+class GroupingWaitPage(WaitPage):
+    group_by_arrival_time = True
 
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+    @staticmethod
+    def after_all_players_arrive(group: Group):
+        subsession = group.subsession
+
+        # % is the modulus operator.
+        # so when num_groups_created exceeds the max list index,
+        # we go back to 0, thus creating a cycle.
+        idx = subsession.num_groups_created % len(C.TREATMENTS)
+
+        treatment = C.TREATMENTS[idx]
+
+        for p in group.get_players():
+            # since we want the treatment to persist for all rounds, we need to assign it
+            # in a participant field (which persists across rounds)
+            # rather than a group field, which is specific to the round.
+            p.participant.treatment = treatment
+            # For finishing at a random point
+            p.participant.finished_rounds = False
+
+        subsession.num_groups_created += 1
 
 class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
+
+    @staticmethod
+    def get_timeout_seconds(player):
+        participant = player.participant
+        session = player.session
+
+        if participant.is_dropout:
+            return 1  # instant timeout, 1 seconds
+        else:
+            return session.min_time
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        participant = player.participant
+
+        if timeout_happened:
+            if participant.treatment:
+                player.cooperate = True
+            else:
+                player.cooperate = False
+            participant.is_dropout = True
 
 
 class ResultsWaitPage(WaitPage):
@@ -106,6 +167,21 @@ class Results(Page):
             my_decision=player.field_display('cooperate'),
             opponent_decision=opponent.field_display('cooperate'),
         )
+    @staticmethod
+    def get_timeout_seconds(player):
+        participant = player.participant
+        session = player.session
+
+        if participant.is_dropout:
+            return 1  # instant timeout, 1 seconds
+        else:
+            return session.min_time
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        participant = player.participant
+
+        if timeout_happened:
+            participant.is_dropout = True
 
 
-page_sequence = [Decision, ResultsWaitPage, Results]
+page_sequence = [GroupingWaitPage, Decision, ResultsWaitPage, Results]
