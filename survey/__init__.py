@@ -7,7 +7,6 @@ class C(BaseConstants):
     NUM_ROUNDS = 1
     WAIT_TIME = 90
 
-
 class Subsession(BaseSubsession):
     pass
 
@@ -59,7 +58,7 @@ class Player(BasePlayer):
         label='Should federal spending on defense be increased, decreased, or kept the same?',
         widget=widgets.RadioSelect,
     )
-    pol_def_wtp = models.IntegerField(
+    pol_def_wtp = models.FloatField(
         label='How much of your current household income would you be willing to pay to increase defense budget? Please enter a percentage between 0 and 100:',
         min=0,
         max=100
@@ -78,7 +77,7 @@ class Player(BasePlayer):
         label='Should federal spending on the war on terrorism be increased, decreased, or kept the same?',
         widget=widgets.RadioSelect,
     )
-    pol_terror_wtp = models.IntegerField(
+    pol_terror_wtp = models.FloatField(
         label='How much of your current household income would you be willing to pay to increase spending on the war on terrorism? Please enter a percentage between 0 and 100:',
         min=0,
         max=100
@@ -111,7 +110,7 @@ class Player(BasePlayer):
         label='Should federal spending on healthcare be increased, decreased, or kept the same?',
         widget=widgets.RadioSelect,
     )
-    pol_health_wtp = models.IntegerField(
+    pol_health_wtp = models.FloatField(
         label='How much of your current household income would you be willing to pay in order to implement government regulated universal healthcare? Please enter a percentage between 0 and 100:',
         min=0,
         max=100
@@ -200,23 +199,23 @@ class Player(BasePlayer):
     )
     # Actually interesting items
     climate_gov = models.IntegerField(
-        choices=[[1, "1 - Doing more about climate change"],
+        choices=[[1, "1 - Should be doing more about climate change"],
                  [2, "2"],
                  [3, "3"],
-                 [4, "4 - Doing the right amount"],
+                 [4, "4 - Is doing the right amount"],
                  [5, "5"],
                  [6, "6"],
-                 [7, "7 - Doing less about climate change"],
+                 [7, "7 - Should be doing less about climate change"],
                  [8, "Don't know"],
                  [9, "I haven't thought much about it"]
                  ],
         label='Do you think the federal government should be doing more about climate change, should be doing less, or is it currently doing the right amount?',
         widget=widgets.RadioSelect,
     )
-    climate_wtp_gas = models.IntegerField(
+    climate_wtp_gas = models.FloatField(
         label='The average gas price in 2021 in the US was USD 3.01 per gallon. How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system? Please enter an integer to indicate the amount of cents you would be willing to pay on top of the USD 3.01:',
     )
-    climate_wtp_tax = models.IntegerField(
+    climate_wtp_tax = models.FloatField(
         label='How much of your current household income would you be willing to pay to mitigate climate change outcomes? Please enter a percentage between 0 and 100:',
         min = 0,
         max = 100
@@ -284,7 +283,6 @@ class InformationIntervention(Page):
     def before_next_page(player: Player, timeout_happened):
         import time
         player.page_pass_time = time.time() + C.WAIT_TIME
-
 
 class InformationEvaluation(Page):
     form_model = 'player'

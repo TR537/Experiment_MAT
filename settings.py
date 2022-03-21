@@ -19,7 +19,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=0.001, participation_fee=2.00, doc="",
         mturk_hit_settings=dict(
             keywords='bonus, study, experiment, decision',
-            title='Decision task against opponent - earn about $5 in 20 minutes',
+            title='Decision task against opponent - earn about $3 in 20 minutes',
             description='In this study you will take part in an online multiplayer decision task. $3 for sure, plus bonus. Expected to take 20 minutes',
             frame_height=500,
             template='global/mturk_template.html',
