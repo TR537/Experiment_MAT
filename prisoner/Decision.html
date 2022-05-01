@@ -8,19 +8,19 @@
                 <th colspan="2">The Other Participant</th>
             </tr>
             <tr>
-                <th>A</th>
-                <th>B</th>
+                <th>{{session.strat_labels.cooperate}}</th>
+                <th>{{session.strat_labels.defect}}</th>
             </tr>
             <tr>
                 <th rowspan="2"><span>You</span></th>
-                <td><button name="cooperate" value="True" class="btn btn-primary btn-large">A</button></td>
-                <td>{{C.payoff_both_coop}}</td>
-                <td>{{ C.payoff_Icoop }}</td>
+                <td><button name="cooperate" value="True" class="btn btn-primary btn-large">{{session.strat_labels.cooperate}}</button></td>
+                <td>You get <b>{{session.payoff_matrix.both_coop}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.both_coop}}</b></td>
+                <td>You get <b>{{session.payoff_matrix.I_coop}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.I_def}}</b></td>
             </tr>
             <tr>
-                <td><button name="cooperate" value="False" class="btn btn-primary btn-large">B</button></td>
-                <td>{{C.payoff_Idef}}</td>
-                <td>{{C.payoff_both_defect}}</td>
+                <td><button name="cooperate" value="False" class="btn btn-primary btn-large">{{session.strat_labels.defect}}</button></td>
+                <td>You get <b>{{session.payoff_matrix.I_def}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.I_coop}}</b></td>
+                <td>You get <b>{{session.payoff_matrix.both_defect}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.both_defect}}</b></td>
             </tr>
         </table>
     </div>

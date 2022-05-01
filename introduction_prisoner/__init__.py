@@ -9,8 +9,8 @@ payoffs.
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'newpayoffs'
-    PLAYERS_PER_GROUP = 2
+    NAME_IN_URL = 'explanation_game1'
+    PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
     INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
 
@@ -31,14 +31,7 @@ class Player(BasePlayer):
 
 # PAGES
 class Introduction(Page):
-    @staticmethod
-    def get_timeout_seconds(player):
-        participant = player.participant
-
-        if participant.is_dropout:
-            return 0.1  # instant timeout, 0.1 seconds
-        else:
-            return 60
+    pass
 
 
 page_sequence = [Introduction]

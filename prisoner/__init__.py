@@ -11,16 +11,6 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 5
     INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
-    z = 150 # initial endowment
-    r = 0.1 # interest on investing
-    # Payoffs for all actions
-    payoff_Idef = cu(z + 0.5 * (1 + r) * z) # A
-    payoff_both_coop = cu((1 + r) * z) # B
-    payoff_both_defect = cu(z) # C
-    payoff_Icoop = cu(0.5 * (1 + r) * z) # D
-    # minimum delta formulas
-    delta_min = (1-r)/(1+r)
-    delta_risk_dom_min = 1-r
 
 class Subsession(BaseSubsession):
     pass
@@ -31,7 +21,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     cooperate = models.BooleanField(
-        choices=[[True, 'A'], [False, 'B']],
+        choices=[[True, 'invest'], [False, 'not invest']],
         doc="""This player's decision""",
         widget=widgets.RadioSelect,
     )
@@ -42,16 +32,18 @@ def set_payoffs(group: Group):
     for p in group.get_players():
         set_payoff(p)
 
+
 def other_player(player: Player):
     return player.get_others_in_group()[0]
 
 
 def set_payoff(player: Player):
+    session = player.session
     payoff_matrix = {
-        (False, True): C.payoff_Idef,
-        (True, True): C.payoff_both_coop,
-        (False, False): C.payoff_both_defect,
-        (True, False): C.payoff_Icoop,
+        (False, True): session.payoff_matrix['I_def'],
+        (True, True): session.payoff_matrix['both_coop'],
+        (False, False): session.payoff_matrix['both_defect'],
+        (True, False): session.payoff_matrix['I_coop'],
     }
     other = other_player(player)
     player.payoff = payoff_matrix[(player.cooperate, other.cooperate)]
@@ -97,8 +89,10 @@ class Decision(Page):
 
         if timeout_happened:
             player.cooperate = False
-            participant.is_dropout = True
-
+            if participant.strike:
+                participant.is_dropout = True
+            else:
+                participant.strike = True
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
@@ -121,7 +115,7 @@ class Results(Page):
         session = player.session
 
         if participant.is_dropout:
-            return 1  # instant timeout, 1 seconds
+            return 0.1  # instant timeout, 1 seconds
         else:
             return session.min_time
 
@@ -130,7 +124,11 @@ class Results(Page):
         participant = player.participant
 
         if timeout_happened:
-            participant.is_dropout = True
+            if participant.strike:
+                participant.is_dropout = True
+            else:
+                participant.strike = True
+
 
 
 page_sequence = [GroupingWaitPage, Decision, ResultsWaitPage, Results]

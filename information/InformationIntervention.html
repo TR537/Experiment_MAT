@@ -1,0 +1,110 @@
+{{ block title }}Information on Public Goods{{ endblock }}
+{{ block content }}
+    <style>
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+    </style>
+
+    <p><i>
+        {{if player.round_number == 1}}
+            Please read the following text thoroughly and answer the questions below.<br>
+            If you answer all three questions correctly on the first try, you will get a bonus of <b>{{inf_bonus.first_try}}</b>.<br>
+            If you answer them correctly on the second try, you will get a bonus of <b>{{inf_bonus.second_try}}</b>.<br>
+            Otherwise you will not get a bonus for this page, but you can still continue the study
+            and try to earn the other parts of the bonus.
+        {{elif player.round_number == 2}}
+            Please re-read the text below and try answering the questions again.<br>
+            This is your second try. You can still earn <b>{{inf_bonus.second_try}}</b>.
+        {{elif player.round_number == 3}}
+            Please re-read the text below and try answering the questions again.<br>
+            This is your third and final try.
+            You will proceed to the rest of the study after the next feedback screen.
+        {{endif}}
+    </i></p>
+
+    <p>
+        In this text I would like you to learn about public goods and how your taxes pay for them.
+    </p>
+
+    <p>
+        Goods and Services can generally be split into private and public goods. <br>
+        Private goods are what you would  normally think of as goods.
+        You can purchase a private good and if you own one itme, nobody else can use it or own it at the same time.
+        Common examples are cars, or dishes of food. <br>
+        <b>Public goods</b> are different. They are usually free to use and if you use it, someone else can use it alongside you.
+        Common examples are <b>national defense</b>, a <b>public drinking fountain</b>, or the <b>environment</b>.
+    </p>
+
+    <div>
+        <img src="{{ static 'information/fig1.png' }}" alt="fig1"/>
+    </div>
+
+    <p>
+        But if public goods are free to use, who pays for providing them?<br>
+        This happens through a group effort. If everybody contributes a little bit,
+        then there is enough funding to provide a public good.
+        Typically, modern democracies use <b>taxes</b> to fund public goods.
+    </p>
+
+    <div>
+        <img src="{{ static 'information/fig2.png' }}" alt="fig2"/>
+    </div>
+
+    <p>
+        The problem is that if one person decides not to pay their contribution, they will still profit from the public good
+        as it would be impossible (or extremely expensive) to exclude this person from consuming the public good. <br>
+        Imagine trying to let someone not enjoy the outdoors if they don't pay their taxes. This would be almost impossible. <br>
+        Such a person is called a <b>free-rider</b>.
+    </p>
+
+    <div>
+        <img src="{{ static 'information/fig3.png' }}" alt="fig3"/>
+    </div>
+
+    <p>
+        Some goods cannot be provided by a government. For example, the environment is a natural public good.
+        It exists without a government to provide it. <br>
+        Nonetheless, the government plays an increasingly important role in <b>protecting it</b>.
+        You can think of it like this: <br>
+        If everybody takes care of the environment a little bit (i.e. everyone recycles, uses less fossil fuels etc.)
+        then the environment is safe.
+    </p>
+
+    <div>
+        <img src="{{ static 'information/fig4.png' }}" alt="fig4"/>
+    </div>
+
+    <p>
+        This is exactly like financing a public good because everybody makes their small contribution towards a greater goal. <br>
+        But it is very hard for an individual to know how much of a contribution is enough and then there's the free rider problem again.
+        If you take your bicycle to work, your neighbor could keep using her sports car to drive to work.
+        Your neighbor would still profit from you (and everyone else) protecting the environment while enjoying her car.
+    </p>
+
+    <div>
+        <img src="{{ static 'information/fig5.png' }}" alt="fig5"/>
+    </div>
+
+    <p>
+        In order to make it <b>fair for everybody</b> and ensure <b>sufficient levels</b> of environmental protection,
+        governments step in. <br>
+        They use <b>taxes</b> to make environmentally damaging products more expensive.
+        For example, by invoking a tax on fossil fuels, people overall consume less of it.
+    </p>
+
+    <div>
+        <img src="{{ static 'information/fig6.png' }}" alt="fig6"/>
+    </div>
+
+    <p>
+        Thank you for reading the text. Please answer the following questions:
+    </p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}

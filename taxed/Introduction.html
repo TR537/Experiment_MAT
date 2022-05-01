@@ -1,0 +1,27 @@
+{{ block title }}Intermission{{ endblock }}
+{{ block content }}
+
+    <p>
+        You have played 5 rounds of the public good game. <b>From now on there will be a {{session.cont_prob_percent}}% chance
+        that the game will continue for one more round</b>. This is true for every round.
+    </p>
+
+    {{if participant.treatment}}
+    <p>
+        The payoffs have changed. This is because now the game has a <b>tax</b>.<br>
+
+        If someone chooses <b>{{session.strat_labels.defect}}</b>, the person pays a tax.<br>
+
+        This is similar to a tax to provide a public good.
+        You will find that only <b>investing</b> is now a profitable option, independent of your opponents' action.<br>
+
+        Please look at the payoff table below to see the change in payoffs and how exactly the tax works.
+    </p>
+    {{include C.INSTRUCTIONS_TEMPLATE_T}}
+    {{else}}
+    {{include C.INSTRUCTIONS_TEMPLATE}}
+    {{endif}}
+
+    {{ next_button }}
+
+{{ endblock }}

@@ -5,7 +5,13 @@ SESSION_CONFIGS = [
     dict(
         name='all_in_one',
         display_name="All in one",
-        app_sequence=['introduction', 'prisoner', 'introduction_taxed', 'taxed', 'survey', 'payment_info'],
+        app_sequence=['introduction',
+                      'information',
+                      'introduction_prisoner',
+                      'prisoner',
+                      'taxed',
+                      'survey',
+                      'payment_info'],
         num_demo_participants=4,
     ),
 ]
@@ -16,11 +22,11 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=0.001, participation_fee=2.00, doc="",
+    real_world_currency_per_point=0.001, participation_fee=3.00, doc="",
         mturk_hit_settings=dict(
             keywords='bonus, study, experiment, decision',
             title='Decision task against opponent - earn about $3 in 20 minutes',
-            description='In this study you will take part in an online multiplayer decision task. $3 for sure, plus bonus. Expected to take 20 minutes',
+            description='In this study you will take part in an online multiplayer decision task. $3 for sure, plus bonus ($2 on average). Expected to take 30 minutes',
             frame_height=500,
             template='global/mturk_template.html',
             minutes_allotted_per_assignment=60,
@@ -41,17 +47,25 @@ SESSION_CONFIG_DEFAULTS = dict(
                     'Comparator': "EqualTo",
                     'LocaleValues': [{'Country': "US"}]
                 },
-                {
-                    'QualificationTypeId': "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH", # Masters
-                    'Comparator': "Exists",
-                },
+                # {
+                #     'QualificationTypeId': "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH", # Masters
+                #     'Comparator': "Exists",
+                # },
             ]
             # grant_qualification_id='YOUR_QUALIFICATION_ID_HERE', # to prevent retakes
 ),
 )
 
-PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'is_dropout', 'past_group_id']
-SESSION_FIELDS = ['cont_prob_percent', 'payoff_Idef', 'payoff_both_coop', 'payoff_both_defect', 'payoff_Icoop', 'min_time']
+PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'strike', 'is_dropout', 'past_group_id']
+SESSION_FIELDS = ['cont_prob_percent', 'min_time',
+                  'z', 'r', 't', 'r_percent',
+                  'payoff_Idef', 'payoff_both_coop', 'payoff_both_defect', 'payoff_Icoop',
+                  'payoff_Idef_t', 'payoff_Icoop_t',
+                  'payoff_matrix',
+                  'inf_bonus',
+                  'coop_label', 'defect_label',
+                  'strat_labels',
+                  'delta_min', 'delta_risk_dom_min']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans

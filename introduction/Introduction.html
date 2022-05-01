@@ -1,31 +1,17 @@
-{{ block title }}Introduction{{ endblock }}
+{{ block title }}Welcome{{ endblock }}
 {{ block content }}
 
     <p>
-       Please read the instructions thoroughly. The instructions will be displayed on every page below the actual game. <br>
-       You can press the "Next" button at any time but please take your time to understand the instructions.
-       Beginning on the next page, you will always have 30 seconds to choose an option,
-       but you can choose faster and hit the next button.
-       Should it take you longer to pick between the two options, <b>you will drop out automatically.</b>
+        In this study, you will first read some information on an economic phenomenon called <b>public goods</b>. <br>
+        After that you will play a game with another participant. The game is completely anonymous.
+        I.e. the other participant does not know you, and you will not know the other participant. <br>
+        In the last part you will have to answer a few survey questions.
     </p>
 
     <p>
-        In this study, you will be randomly and anonymously paired with another
-        participant.
-        Each of you simultaneously and privately chooses between two actions. Action A or B.
-        Your payoffs will be determined as is described by the table in the game.
-        1 point is 0.1 Cents worth. The points add up over rounds, and this determines your bonus.
-        Therefore, you should choose the action that gets you the most points.
-        An example as to how to interpret the table is given below.
+        Your base fee is {{session.participation_fee}}. Additionally, you can earn a bonus of about $2.00. <br>
+        The study takes about 30 minutes. Please only take part if you have that much time available in a single session.
     </p>
-
-    <p>
-        You will play this "game" repeatedly for at least 5 rounds.
-        Beginning in round 6 there is a {{session.cont_prob_percent}} %
-        chance that the game will continue for one more round.
-    </p>
-
-    {{ include C.INSTRUCTIONS_TEMPLATE }}
 
     {{ next_button }}
 

@@ -1,11 +1,12 @@
 from otree.api import *
+import random
 
 
 class C(BaseConstants):
     NAME_IN_URL = 'survey'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
-    WAIT_TIME = 90
+
 
 class Subsession(BaseSubsession):
     pass
@@ -16,159 +17,147 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    # Timer value
-    page_pass_time = models.FloatField()
-    # Information Provision
-    inf_prov1 = models.BooleanField(
-        choices=[[False, "There are usually too many funds and the excess money has to be redistributed which is a bureaucratic hassle."],
-                 [True, "People can profit from other people's investment without investing themselves."],
-                 [False, "It is hard to distribute the public good to everybody."]
-                 ],
-        label='What is the major problem in the provision of public goods?',
-        widget=widgets.RadioSelect,
-    )
-    inf_prov2 = models.BooleanField(
-        choices=[[False, "Healthcare"],
-                 [True, "Environmental Policies"],
-                 [False, "Cars"]
-                 ],
-        label='Which of the following constitute public goods?',
-        widget=widgets.RadioSelect,
-    )
-    inf_prov3 = models.BooleanField(
-        choices=[[True, "Taxing people who are not willing to contribute."],
-                 [False, "Putting people in jail if they do not contribute."],
-                 [False, "Not doing anything, the market usually finds its equilibrium. Therefore, any level of provision is actually optimal already."]
-                 ],
-        label='How can public good provision be improved in real-world applications?',
-        widget=widgets.RadioSelect,
-    )
-    # Political Attitude Survey
-    pol_def = models.IntegerField(
-        choices=[[1, "1 - Greatly decrease defense spending"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep defense spending about the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Greatly increase defense spending"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
-                 ],
-        label='Should federal spending on defense be increased, decreased, or kept the same?',
-        widget=widgets.RadioSelect,
-    )
-    pol_def_wtp = models.FloatField(
-        label='How much of your current household income would you be willing to pay to increase defense budget? Please enter a percentage between 0 and 100:',
+    ##################################################################
+    ####################### FloatFields ##############################
+    ##################################################################
+    # Public Goods and Climate Change
+    climate_wtp_gas = models.FloatField(
+        label='''The average gas price in 2021 in the US was $3.01 per gallon.
+            How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system?
+            Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
         min=0,
-        max=100
     )
-    pol_terror = models.IntegerField(
-        choices=[[1, "1 - Greatly decrease war on terror spending"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep war on terror spending about the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Greatly increase war on terror spending"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
-                 ],
-        label='Should federal spending on the war on terrorism be increased, decreased, or kept the same?',
-        widget=widgets.RadioSelect,
-    )
-    pol_terror_wtp = models.FloatField(
-        label='How much of your current household income would you be willing to pay to increase spending on the war on terrorism? Please enter a percentage between 0 and 100:',
+    climate_wtp_tax = models.FloatField(
+        label='''Reaching the Paris Climate Agreement goal of not going above 1.5 degree centigrade temperature increase globally
+                 would save about $2 billion per year in the US alone compared to not doing anything against climate change.
+                 How much of your current household income would you be willing to pay as part of a carbon tax to finance research
+                 that could mitigate further temperature increase?
+                 Please enter a percentage between 0 and 100:''',
         min=0,
-        max=100
-    )
-    pol_poor = models.IntegerField(
-        choices=[[1, "1 - Greatly decrease aid to the poor"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep aid to the poor about the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Greatly increase aid to the poor"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
-                 ],
-        label='Should federal spending on aid to the poor be increased, decreased, or kept the same?',
-        widget=widgets.RadioSelect,
-    )
-    pol_health = models.IntegerField(
-        choices=[[1, "1 - Greatly decrease healthcare spending"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep healthcare spending about the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Greatly increase healthcare spending"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
-                 ],
-        label='Should federal spending on healthcare be increased, decreased, or kept the same?',
-        widget=widgets.RadioSelect,
-    )
-    pol_health_wtp = models.FloatField(
-        label='How much of your current household income would you be willing to pay in order to implement government regulated universal healthcare? Please enter a percentage between 0 and 100:',
+        max=100,
+    )  # This question is difficult to install. It is vague and asks for something really hard to imagine
+    # climate_wtp_tax = models.FloatField(
+    #     label='''Estimated costs from climate change outcomes are around 1% of GDP of the US per year
+    #         (this is around $2 billion) for every degree centigrade of average temperature increase.
+    #         Currently, we are on a projection to reach 2.5 degree centigrade by 2100.
+    #         Assume that successful research in clean energy solutions would lead to reaching the Paris Climate Agreement goal
+    #         of not going above 1.5 degree centigrade temperature increase (i.e. it could save $2 billion per year in the US alone).
+    #         How much of your current household income would you be willing to pay as part of a carbon tax to finance such research?
+    #         Please enter a percentage between 0 and 100:''',
+    #     min=0,
+    #     max=100,
+    # )  # This question is difficult to install. It is vague and asks for something really hard to imagine
+    climate_wtp_flight = models.FloatField(
+        label='''On average, flying 100 miles (domestically) cost about $50 in 2020.
+                 How much would you be willing to pay on top of the usual price of a plane ticket as part of a carbon tax system?
+                 Please enter how many dollars you would be willing to pay on top of the $50 per 100 miles (does not need to be a whole number):''',
+        # Traveling by plane uses comparatively high amounts of fossil fuels. Therefore, it might be sensible to install a carbon tax on flights.
+        # On average a domestic flight in the US in 2020 cost about $250 and was about 500 miles long.
         min=0,
-        max=100
     )
-    pol_blkaid = models.IntegerField(
-        choices=[[1, "1 - Greatly decrease aid to blacks"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep aid to blacks about the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Greatly increase aid to blacks"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
+    climate_wtp_energy = models.FloatField(
+        label='''Installing an average solar system network on a residential house in the US costs about $10,000.
+                 How much of your current household income would you be willing to pay as part of a carbon tax to finance
+                 an average government refund of $2,000 per solar system (a 20% subsidy)?
+                 Please enter a percentage between 0 and 100:''',
+        # Fossil fuels are a burden for the climate. The US still uses primarily fossil fuels for transportation.
+        # A subsidy on greener energy technologies could help to reduce the use of fossil fuels.
+        min=0,
+        max=100,
+    )
+    # Not Public Goods
+    pol_socialsec_wtp = models.FloatField(
+        label='''The social security administration provides pensions to retired workers using the taxes you are currently paying.
+                 Right now the average pension (through the social security administration) is $15,000 per retiree per year.
+                 How much of your current household income would you be willing to pay to increase social security benefits
+                 by $1,500 per person per year (a 10% increase)?
+                 Please enter a percentage between 0 and 100:''',
+        min=0,
+        max=100,
+    )
+    pol_poor_wtp = models.FloatField(
+        label='''In 2018 the US spent approximately $11,000 on social benefits per capita.
+                 These benefits are primarily given to low-income households to subsidize their cost of living.  
+                 How much of your current household income would you be willing to pay to increase
+                 average social benefits by $1,000 (an increase of roughly 10%)?
+                 Please enter a percentage between 0 and 100:''',
+        min=0,
+        max=100,
+    )
+    pol_agriculture_wtp = models.FloatField(
+        label='''In 2020 the US spent approximately $10 billion on subsidies for farmers in the US.
+                 These benefits are primarily used to grow crops like corn, soy, and wheat, which are used in processed foods.  
+                 How much of your current household income would you be willing to pay to increase
+                 this subsidy towards the US agriculture industry by $1 billion (an increase of roughly 10%)?
+                 Please enter a percentage between 0 and 100:''',
+        min=0,
+        max=100,
+    )
+    ##################################################################
+    ###################### Hypothesis Checks #########################
+    ##################################################################
+    hyp = models.StringField(
+        label='State in one sentence: What do you believe the current study is about?',
+        widget=widgets.TextArea
+    )
+    ##################################################################
+    ####################### Attention Checks #########################
+    ##################################################################
+    att_check1 = models.BooleanField(
+        choices=[[False, "1 - Strongly Democrat"],
+                 [True, "2 - Democrat"],
+                 [False, "3 - Independent, lean Democrat"],
+                 [False, "4 - Independent"],
+                 [False, "5 - Independent, lean Republican"],
+                 [False, "6 - Republican"],
+                 [False, "7 - Strongly Republican"],
                  ],
-        label='Should federal spending to improve the social and economic position of blacks be increased, decreased, or kept the same?',
+        label='We are using this question to check your attention. Please select “Democrat”.',
         widget=widgets.RadioSelect,
     )
-    pol_adopt = models.IntegerField(
-        choices=[[1, "1 - Favor strongly"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Neither favor nor oppose"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Oppose strongly"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
+    att_check2 = models.BooleanField(
+        choices=[[False, "1 - Strongly Democrat"],
+                 [False, "2 - Democrat"],
+                 [False, "3 - Independent, lean Democrat"],
+                 [False, "4 - Independent"],
+                 [False, "5 - Independent, lean Republican"],
+                 [True, "6 - Republican"],
+                 [False, "7 - Strongly Republican"],
                  ],
-        label='Do you favor or oppose laws that prevent gay or lesbian couples from adopting children, or haven’t you thought much about it?',
+        label='We are using this question to check your attention. Please select “Republican”.',
         widget=widgets.RadioSelect,
     )
-    pol_imm = models.IntegerField(
-        choices=[[1, "1 - Greatly decrease spending on immigration control"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep spending on immigration control about the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Greatly increase spending on immigration control"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
+    att_check3 = models.FloatField(
+        label='We are using this question to check your attention. Please enter 2022.',
+    )
+    ##################################################################
+    ################## Socio-economic information ####################
+    ##################################################################
+    age = models.IntegerField(label='What is your age?', min=13, max=120)
+    gender = models.StringField(
+        choices=[['Male', 'Male'],
+                 ['Female', 'Female'],
+                 ['other', 'other'],
                  ],
-        label='Should federal spending to control immigration be increased, decreased, or kept the same?',
+        label='What is your gender?',
         widget=widgets.RadioSelect,
     )
-    pol_guns = models.IntegerField(
-        choices=[[1, "1 - Make it much more difficult"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Keep the rules the same"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Make it much easier"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
+    residence = models.StringField(
+        choices=[['US', 'US'],
+                 ['Canada', 'Canada'],
+                 ['other', 'other'],
                  ],
-        label='Should the federal government make it more difficult for people to buy a gun than it is now, make it easier for people to buy a gun, or keep these rules about the same as they are now?',
+        label='Where do you currently live?',
+        widget=widgets.RadioSelect,
+    )
+    education = models.StringField(
+        choices=[['Primary School', 'Primary School'],
+                 ['High School', 'High School'],
+                 ['Bachelors Degree', 'Bachelors Degree'],
+                 ['Masters Degree', 'Masters Degree'],
+                 ['PhD', 'PhD'],
+                 ],
+        label='What is the highest degree of education that you have obtained?',
         widget=widgets.RadioSelect,
     )
     pol_interest = models.IntegerField(
@@ -191,140 +180,61 @@ class Player(BasePlayer):
                  [5, "5 - Slightly conservative"],
                  [6, "6 - Conservative"],
                  [7, "7 - Strongly conservative"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
                  ],
-        label='When it comes to politics, do you think of yourself as a liberal, conservative, moderate, or haven’t you thought much about this?',
+        label='When it comes to politics, do you think of yourself as a liberal, conservative, or moderate?',
         widget=widgets.RadioSelect,
     )
-    # Actually interesting items
-    climate_gov = models.IntegerField(
-        choices=[[1, "1 - Should be doing more about climate change"],
-                 [2, "2"],
-                 [3, "3"],
-                 [4, "4 - Is doing the right amount"],
-                 [5, "5"],
-                 [6, "6"],
-                 [7, "7 - Should be doing less about climate change"],
-                 [8, "Don't know"],
-                 [9, "I haven't thought much about it"]
+    ##################################################################
+    ############### Check for information retention ##################
+    ##################################################################
+    inf_ret1 = models.IntegerField(
+        label='''You just played a game.
+                 Please try to remember the game and select the statement that best describes what happened in the game.''',
+        choices=[[1, '''In the game you were given 200 points every round and if you invested the points,
+                        there was a fifty fifty chance that the points would increase or decrease.'''],
+                 [2, '''In the game you played repeatedly with another person.
+                        If neither invested, then everybody kept their initial amount of points.
+                        If both invested, this gave both of you a higher payoff.
+                        If only one person invested, then this person got less points, while the not investing person got more points.'''],
+                 # Correct
+                 [3, '''In the game you could choose between 2 strategies 
+                        and only your choice mattered for the determination of the points you received.
+                        This is typical for public goods, where your action alone is determining the provision of a good.'''],
                  ],
-        label='Do you think the federal government should be doing more about climate change, should be doing less, or is it currently doing the right amount?',
         widget=widgets.RadioSelect,
     )
-    climate_wtp_gas = models.FloatField(
-        label='The average gas price in 2021 in the US was USD 3.01 per gallon. How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system? Please enter an integer to indicate the amount of cents you would be willing to pay on top of the USD 3.01:',
-    )
-    climate_wtp_tax = models.FloatField(
-        label='How much of your current household income would you be willing to pay to mitigate climate change outcomes? Please enter a percentage between 0 and 100:',
-        min = 0,
-        max = 100
-    )
-    # Hypothesis Check
-    hyp = models.StringField(
-        label='State in one sentence: What do you believe the current study is about?',
-        widget=widgets.TextArea
-    )
-    # Attention Checks
-    att_check1 = models.BooleanField(
-        choices=[[False, "1 - Strongly Democrat"],
-                 [False, "2 - Democrat"],
-                 [False, "3 - Independent, lean Democrat"],
-                 [False, "4 - Independent"],
-                 [False, "5 - Independent, lean Republican"],
-                 [False, "6 - Republican"],
-                 [False, "7 - Strongly Republican"],
-                 [True, "Don't know"],
-                 [False, "I haven't thought much about it"]
+    inf_ret2 = models.IntegerField(
+        label='''In the beginning you got information about public goods.
+                 Please choose which of the following is a public good.''',
+        choices=[[1, 'Happy Meal from McDonald\'s'],
+                 [2, 'Cable TV'],
+                 [3, 'National Defense'],  # Correct
                  ],
-        label='We are using this question to check your attention. Please select “Don’t know”.',
         widget=widgets.RadioSelect,
     )
-    att_check2 = models.BooleanField(
-        choices=[[False, "1 - Strongly Democrat"],
-                 [False, "2 - Democrat"],
-                 [False, "3 - Independent, lean Democrat"],
-                 [False, "4 - Independent"],
-                 [False, "5 - Independent, lean Republican"],
-                 [False, "6 - Republican"],
-                 [False, "7 - Strongly Republican"],
-                 [False, "Don't know"],
-                 [True, "I haven't thought much about it"]
-                 ],
-        label='We are using this question to check your attention. Please select “I haven’t thought much about it”.',
-        widget=widgets.RadioSelect,
-    )
-    # Standard Socio-Economic questions
-    age = models.IntegerField(label='What is your age?', min=13, max=125)
-    gender = models.StringField(
-        choices=[['Male', 'Male'], ['Female', 'Female'], ['other', 'other']],
-        label='What is your gender?',
-        widget=widgets.RadioSelect,
-    )
-    residence = models.StringField(
-        choices=[['US', 'US'], ['Canada', 'Canada'], ['other', 'other']],
-        label='Where do you currently live?',
-        widget=widgets.RadioSelect,
-    )
-    education = models.StringField(
-        choices=[['Primary School', 'Primary School'], ['High School', 'High School'],
-                 ['Bachelors Degree', 'Bachelors Degree'], ['Masters Degree', 'Masters Degree'], ['PhD', 'PhD']],
-        label='What is the highest degree of education that you have obtained?',
-        widget=widgets.RadioSelect,
-    )
+
 
 # FUNCTIONS
 
 # PAGES
-class InformationIntervention(Page):
-    form_model = 'player'
-    form_fields = ['inf_prov1', 'inf_prov2', 'inf_prov3']
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        import time
-        player.page_pass_time = time.time() + C.WAIT_TIME
-
-class InformationEvaluation(Page):
-    form_model = 'player'
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(
-            correct1=player.inf_prov1,
-            correct2=player.inf_prov2,
-            correct3=player.inf_prov3,
-            explanation1='''The first answer is wrong because people tend to underprovide a public good.
-                The third answer is wrong because a public good is generally automatically consumed
-                (e.g. public defence is always consumed by any resident). The second statement is correct
-                since this is the free-riding problem that was discussed in the text. I.e. people get a benefit from
-                other people investing regardless of their own contribution.''',
-            explanation2='''The first answer is wrong because healthcare can be privately organized.
-                For example, the US has a private healthcare system. Public health on the other hand is a public good
-                since every citizen profits from a higher health standard in a nation. The third statement is also wrong
-                since cars can be privately owned and they only provide use to the owner.
-                Environmental Policies on the other hand are useful to everybody that would be affected
-                from the consequences of not having them in place.
-                For example, if there was a world-wide subsidy to use green energy,
-                everybody would profit from less green-house-gas emissions. Therefore, the second statement is correct.''',
-            explanation3='''The second answer is wrong. While putting people into jail who do not contribute might be very effective,
-                it would also be very difficult to implement in any democratic state.
-                The third answer is also wrong since even the more conservative anti-tax economists agree
-                that in public goods markets there is a market-failure that has to be corrected through the use of a tax
-                or a subsidy (from an economic standpoint subsidies and taxes are equivalent instruments).
-                Therefore, taxation is currently the best option to make people provide public goods.''',
-        )
-    @staticmethod
-    def error_message(player: Player, values):
-        import time
-        wait_time_error = round(player.page_pass_time - time.time())
-        if time.time() < player.page_pass_time:
-            return "You cannot pass this page yet. You have to wait another {} seconds".format(wait_time_error)
-
 class Survey(Page):
     form_model = 'player'
-    form_fields = ['pol_def', 'pol_def_wtp', 'att_check1', 'climate_wtp_tax', 'pol_terror', 'pol_terror_wtp', 'pol_poor', 'climate_gov', 'pol_health', 'pol_health_wtp', 'pol_blkaid', 'att_check2', 'climate_wtp_gas', 'pol_adopt', 'pol_imm', 'pol_guns', 'pol_interest', 'pol_party', 'hyp']
+    items = ['climate_wtp_gas', 'climate_wtp_tax', 'climate_wtp_flight', 'climate_wtp_energy',  # WTP climate
+             'pol_socialsec_wtp', 'pol_poor_wtp', 'pol_agriculture_wtp',  # WTP other policies
+             'att_check3',  # checking if participant is paying attention
+             ]
+    random.shuffle(items)  # shuffling into random order
+    items = items + ['inf_ret1', 'inf_ret2']
+    form_fields = items
+
 
 class Demographics(Page):
     form_model = 'player'
-    form_fields = ['age', 'gender', 'residence', 'education']
+    form_fields = ['age', 'gender', 'residence', 'education', 'pol_interest', 'pol_party']
 
-page_sequence = [InformationIntervention, InformationEvaluation, Survey, Demographics]
+
+class PaymentInfo(Page):
+    pass
+
+
+page_sequence = [Survey, Demographics]

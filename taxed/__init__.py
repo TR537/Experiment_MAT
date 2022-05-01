@@ -11,24 +11,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 30
     INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
-    z = 250
-    r = 0.1
-    t = int(0.5 * z)
-    # Same Payoffs:
-    payoff_both_coop = cu((1 + r) * z)  # B
-    payoff_both_defect = cu(z)  # C
-
-    # Payoffs for control group:
-    payoff_Idef_cont = cu(z + 0.5 * (1 + r) * z)  # A
-    payoff_Icoop_cont = cu(0.5 * (1 + r) * z)  # D
-
-    # Payoffs for treatment group:
-    payoff_Idef_treat = cu(z + 0.5 * (1 + r) * z - t)  # A
-    payoff_Icoop_treat = cu(0.5 * (1 + r) * z + t)  # D
-
-    # Deltas
-    delta_min = (1 - r) / (1 + r)
-    delta_risk_dom_min = 1 - r
+    INSTRUCTIONS_TEMPLATE_T = 'introduction/instructions_t.html'
 
     # Treatments
     TREATMENTS = [True, False]
@@ -54,17 +37,18 @@ def other_player(player: Player):
     return player.get_others_in_group()[0]
 
 def set_payoff(player: Player, group: Group):
+    session = player.session
     payoff_matrix_cont = {
-        (False, True): C.payoff_Idef_cont,
-        (True, True): C.payoff_both_coop,
-        (False, False): C.payoff_both_defect,
-        (True, False): C.payoff_Icoop_cont,
+        (False, True): session.payoff_matrix['I_def'],
+        (True, True): session.payoff_matrix['both_coop'],
+        (False, False): session.payoff_matrix['both_defect'],
+        (True, False): session.payoff_matrix['I_coop'],
     }
     payoff_matrix_treat = {
-        (False, True): C.payoff_Idef_treat,
-        (True, True): C.payoff_both_coop,
-        (False, False): C.payoff_both_defect,
-        (True, False): C.payoff_Icoop_treat,
+        (False, True): session.payoff_matrix['I_def_t'],
+        (True, True): session.payoff_matrix['both_coop'],
+        (False, False): session.payoff_matrix['both_defect'],
+        (True, False): session.payoff_matrix['I_coop_t'],
     }
     other = other_player(player)
     if player.participant.treatment:
@@ -117,6 +101,19 @@ class GroupingWaitPage(WaitPage):
 
         subsession.num_groups_created += 1
 
+class Introduction(Page):
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+    @staticmethod
+    def get_timeout_seconds(player):
+        participant = player.participant
+
+        if participant.is_dropout:
+            return 0.1  # instant timeout, 0.1 seconds
+        else:
+            return 60
+
 class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
@@ -140,7 +137,10 @@ class Decision(Page):
                 player.cooperate = True
             else:
                 player.cooperate = False
-            participant.is_dropout = True
+            if participant.strike:
+                participant.is_dropout = True
+            else:
+                participant.strike = True
 
 
 class ResultsWaitPage(WaitPage):
@@ -173,7 +173,7 @@ class Results(Page):
         session = player.session
 
         if participant.is_dropout:
-            return 1  # instant timeout, 1 seconds
+            return 0.1  # instant timeout, 1 seconds
         else:
             return session.min_time
     @staticmethod
@@ -181,7 +181,10 @@ class Results(Page):
         participant = player.participant
 
         if timeout_happened:
-            participant.is_dropout = True
+            if participant.strike:
+                participant.is_dropout = True
+            else:
+                participant.strike = True
 
 
-page_sequence = [GroupingWaitPage, Decision, ResultsWaitPage, Results]
+page_sequence = [GroupingWaitPage, Introduction, Decision, ResultsWaitPage, Results]

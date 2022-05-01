@@ -1,0 +1,128 @@
+{{ block title }}Additional Information{{ endblock }}
+{{ block content }}
+
+    <p>
+        Thank you for answering the questions. You can read the feedback to your answers below. <br>
+
+        {{if first_try}}
+            You have answered all questions correctly on the first try.<br>
+            You get an additional {{payoff}}. <br>
+            You can go to the next page.
+        {{elif second_try}}
+            You have answered all questions correctly on the second try.<br>
+            You get an additional {{payoff}}. <br>
+            You can go to the next page.
+        {{elif player.round_number == 3}}
+            Unfortunately, you did not answer all questions correctly within the first two tries.<br>
+            Therefore, you don't get a bonus for this page.
+            You can go to the next page.
+        {{else}}
+            You did not answer all questions correctly.<br>
+            Please read the feedback and try again.<br>
+            This was your
+            {{if player.round_number == 1}}first
+            {{elif player.round_number == 2}}second
+            {{endif}}
+            try.
+        {{endif}}
+    </p>
+
+    <h4>Question 1</h4>
+
+    <p>
+        {{ if inf_prov1 == 2 }}
+            <p style="color:#59ff00" ;>
+                You have answered question 1 correctly.
+            </p>
+            <p>
+                 Here is the reason why:<br>{{ explanation1.2 }}
+            </p>
+
+        {{ else }}
+            <p style="color:#FF0000" ;>
+                You have answered question 1 wrong.
+            </p>
+            <p>
+                Here is the reason why:<br>
+
+                You chose statement
+
+                {{ if inf_prov1 == 1 }}
+                    1. <br>
+                    {{ explanation1.1 }}
+                {{ else }}
+                    3. <br>
+                    {{ explanation1.3 }}
+                {{ endif }}
+            </p>
+
+        {{ endif }}
+    </p>
+
+    <h4>Question 2</h4>
+
+    <p>
+        {{ if inf_prov2 == 2 }}
+            <p style="color:#59ff00" ;>
+                You have answered question 2 correctly.
+            </p>
+            <p>
+                 Here is the reason why:<br>{{ explanation2.2 }}
+            </p>
+
+        {{ else }}
+            <p style="color:#FF0000" ;>
+                You have answered question 2 wrong.
+            </p>
+            <p>
+                Here is the reason why:<br>
+
+                You chose statement
+
+                {{ if inf_prov2 == 1 }}
+                    1. <br>
+                    {{ explanation2.1 }}
+                {{ else }}
+                    3. <br>
+                    {{ explanation2.3 }}
+                {{ endif }}
+            </p>
+
+        {{ endif }}
+    </p>
+
+    <h4>Question 3</h4>
+
+    <p>
+        {{ if inf_prov3 == 1 }}
+            <p style="color:#59ff00" ;>
+                You have answered question 3 correctly.
+            </p>
+            <p>
+                 Here is the reason why:<br>{{ explanation3.1 }}
+            </p>
+
+        {{ else }}
+            <p style="color:#FF0000" ;>
+                You have answered question 3 wrong.
+            </p>
+            <p>
+                Here is the reason why:<br>
+
+                You chose statement
+
+                {{ if inf_prov3 == 2 }}
+                    2. <br>
+                    {{ explanation3.2 }}
+                {{ else }}
+                    3. <br>
+                    {{ explanation3.3 }}
+                {{ endif }}
+            </p>
+
+        {{ endif }}
+    </p>
+
+{{ next_button }}
+
+{{ endblock }}

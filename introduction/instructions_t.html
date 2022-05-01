@@ -8,12 +8,9 @@
         This is an example of a payoff table and how you should interpret it:
     </p>
     <p><i>
-        In the game you get an initial amount of {{session.z}} points
-        and you will be able to choose between <b>investing</b> and <b>not investing</b>.<br>
-
         The rows are your actions and the columns are your opponents' actions.
         So if you chose "{{session.strat_labels.cooperate}}" and your opponent chose "{{session.strat_labels.defect}}",
-        you'd get {{session.payoff_matrix.I_coop}} and your opponent would get {{session.payoff_matrix.I_def}}. <br>
+        you'd get {{session.payoff_matrix.I_coop_t}} and your opponent would get {{session.payoff_matrix.I_def_t}}. <br>
 
         The intuition behind this is that any investment goes into a common pool like funding for a public good.
         Since we can't provide you with a public good in the game, we will increase the points in the common pool.
@@ -21,16 +18,17 @@
 
         Since the pool is common, half of the points in the pool go to you, the other half to your opponent.
         So anything you invest will generate a bonus, but then again, half of your investment plus bonus
-        will go to your opponent.
-        If you choose not to invest, you get to keep your initial endowment
-        plus half of the investment from your opponent and his bonus.
+        will go to your opponent.<br>
+
+        Unlike before, if you choose not to invest, you will pay a tax. The tax takes half of your points
+        and gives them to your opponent. Of course this tax also exists for your opponent.
     </i></p>
 
     <table class='table table-bordered text-center'
            style='width: auto; margin: auto'>
         <tr>
             <th colspan=2 rowspan=2></th>
-            <th colspan=2>Your Opponent</th>
+            <th colspan=2>The Other Participant</th>
         </tr>
         <tr>
             <th>{{session.strat_labels.cooperate}}</th>
@@ -40,11 +38,11 @@
             <th rowspan=2><span style="transform: rotate(-90deg);">You</span></th>
             <th>{{session.strat_labels.cooperate}}</th>
             <td>You get <b>{{session.payoff_matrix.both_coop}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.both_coop}}</b></td>
-            <td>You get <b>{{session.payoff_matrix.I_coop}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.I_def}}</b></td>
+            <td>You get <b>{{ session.payoff_matrix.I_coop_t }}</b> <br> Your opponent gets <b>{{ session.payoff_matrix.I_coop_t }}</b></td>
         </tr>
         <tr>
             <th>{{session.strat_labels.defect}}</th>
-            <td>You get <b>{{session.payoff_matrix.I_def}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.I_coop}}</b></td>
+            <td>You get <b>{{ session.payoff_matrix.I_coop_t }}</b> <br> Your opponent gets <b>{{ session.payoff_matrix.I_coop_t }}</b></td>
             <td>You get <b>{{session.payoff_matrix.both_defect}}</b> <br> Your opponent gets <b>{{session.payoff_matrix.both_defect}}</b></td>
         </tr>
     </table>
