@@ -23,8 +23,8 @@ class Player(BasePlayer):
     # Public Goods and Climate Change
     climate_wtp_gas = models.FloatField(
         label='''The average gas price in 2021 in the US was $3.01 per gallon.
-            How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system?
-            Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
+                 How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system?
+                 Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
         min=0,
     )
     climate_wtp_tax = models.FloatField(
@@ -76,7 +76,7 @@ class Player(BasePlayer):
         max=100,
     )
     pol_poor_wtp = models.FloatField(
-        label='''In 2018 the US spent approximately $11,000 on social benefits per capita.
+        label='''In 2018 the US spent approximately $11,000 on social benefits per person.
                  These benefits are primarily given to low-income households to subsidize their cost of living.  
                  How much of your current household income would you be willing to pay to increase
                  average social benefits by $1,000 (an increase of roughly 10%)?
