@@ -24,7 +24,7 @@ class Player(BasePlayer):
     climate_wtp_gas = models.FloatField(
         label='''The average gas price in 2021 in the US was $3.01 per gallon.
                  How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system?
-                 Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01.''',
+                 Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
         min=0,
     )
     climate_wtp_tax = models.FloatField(
