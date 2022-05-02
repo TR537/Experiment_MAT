@@ -52,6 +52,8 @@ def set_payoff(player: Player):
 # PAGES
 class GroupingWaitPage(WaitPage):
     group_by_arrival_time = True
+    body_text = '''You might wait for a while on this waitpage until someone else joins the game.
+                   Please don't get discouraged and don't leave the site. You should still not exceed the 30 minutes and you will be paid at least USD 3.00.'''
 
     @staticmethod
     def after_all_players_arrive(group: Group):
