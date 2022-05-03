@@ -49,10 +49,11 @@ def set_payoff(player: Player):
 class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
+    
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         set_payoff(player)
-        
+
 
 class Results(Page):
     @staticmethod
