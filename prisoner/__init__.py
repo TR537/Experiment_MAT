@@ -25,7 +25,7 @@ class Player(BasePlayer):
         doc="""This player's decision""",
         widget=widgets.RadioSelect,
     )
-    other_coop = models.BooleanField()
+    other_coop = models.BooleanField(initial=False)
     other_payoff = models.CurrencyField()
 
 
@@ -49,10 +49,13 @@ def set_payoff(player: Player):
 class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        set_payoff(player)
 
 
-class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoff
+# class ResultsWaitPage(WaitPage):
+#     after_all_players_arrive = set_payoff
 
 
 class Results(Page):
@@ -66,4 +69,4 @@ class Results(Page):
 
 
 
-page_sequence = [Decision, ResultsWaitPage, Results]
+page_sequence = [Decision, Results]
