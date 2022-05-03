@@ -30,6 +30,10 @@ class Player(BasePlayer):
 def creating_session(subsession):
     session = subsession.session
 
+    # Set probability of choosing cooperate for bot
+    session.coop_prob = 0.3
+    session.coop_prob_t = 0.9
+
     # Create balanced treatment groups
     import itertools
     treatments = itertools.cycle([True, False])

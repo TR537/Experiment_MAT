@@ -38,7 +38,7 @@ def set_payoff(player: Player):
         (False, False): session.payoff_matrix['both_defect'],
         (True, False): session.payoff_matrix['I_coop'],
     }
-    if random.random() < 0.3:
+    if random.random() < session.coop_prob:
         player.other_coop = True
 
     player.payoff = payoff_matrix[(player.cooperate, player.other_coop)]
@@ -49,7 +49,7 @@ def set_payoff(player: Player):
 class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
-    
+
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         set_payoff(player)

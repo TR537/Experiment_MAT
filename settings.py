@@ -67,16 +67,15 @@ SESSION_CONFIG_DEFAULTS = dict(
 ),
 )
 
-PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'strike', 'is_dropout', 'past_group_id']
-SESSION_FIELDS = ['cont_prob_percent', 'min_time',
-                  'z', 'r', 't', 'r_percent',
+PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'past_group_id']
+SESSION_FIELDS = ['z', 'r', 't', 'r_percent',
                   'payoff_Idef', 'payoff_both_coop', 'payoff_both_defect', 'payoff_Icoop',
                   'payoff_Idef_t', 'payoff_Icoop_t',
                   'payoff_matrix',
+                  'coop_prob', 'coop_prob_t',
                   'inf_bonus',
                   'coop_label', 'defect_label',
-                  'strat_labels',
-                  'delta_min', 'delta_risk_dom_min']
+                  'strat_labels']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans

@@ -33,7 +33,7 @@ class Player(BasePlayer):
 
 
 # FUNCTIONS
-def set_payoff(player: Player, group: Group):
+def set_payoff(player: Player):
     session = player.session
     payoff_matrix_cont = {
         (False, True): session.payoff_matrix['I_def'],
@@ -47,16 +47,16 @@ def set_payoff(player: Player, group: Group):
         (False, False): session.payoff_matrix['both_defect'],
         (True, False): session.payoff_matrix['I_coop_t'],
     }
-    if random.random() < 0.3:
-        player.other_coop = True
-
-    
 
     if player.participant.treatment:
+        if random.random() < session.coop_prob_t:
+            player.other_coop = True
         player.payoff = payoff_matrix_treat[(player.cooperate, player.other_coop)]
         player.other_payoff = payoff_matrix_treat[(player.other_coop, player.cooperate)]
         
     else:
+        if random.random() < session.coop_prob:
+            player.other_coop = True
         player.payoff = payoff_matrix_cont[(player.cooperate, player.other_coop)]
         player.other_payoff = payoff_matrix_cont[(player.other_coop, player.cooperate)]
 
