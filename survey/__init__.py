@@ -35,7 +35,12 @@ class Player(BasePlayer):
                  Please enter a percentage between 0 and 100:''',
         min=0,
         max=100,
-    )  # This question is difficult to install. It is vague and asks for something really hard to imagine
+    )  
+    # How much of your current household income would you be willing to pay as a carbon tax that 
+    #### would be invested in researching green energy technologies?
+    #### would be used to research solar / wind / water turbine energy solutions?
+
+    # This question is difficult to install. It is vague and asks for something really hard to imagine
     # climate_wtp_tax = models.FloatField(
     #     label='''Estimated costs from climate change outcomes are around 1% of GDP of the US per year
     #         (this is around $2 billion) for every degree centigrade of average temperature increase.
@@ -65,6 +70,10 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
+    # How much of your current household income would you be willing to pay
+    #### to pay subidies towards electric car owners?
+    #### to pay subsidies towards residential housing solar energy systems?
+
     # Not Public Goods
     pol_socialsec_wtp = models.FloatField(
         label='''The social security administration provides pensions to retired workers using the taxes you are currently paying.
@@ -75,6 +84,8 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
+    # How much of your current household income would you be willing to pay to increase social security benefits towards retirees by about 10%?
+    
     pol_poor_wtp = models.FloatField(
         label='''In 2018 the US spent approximately $11,000 on social benefits per person.
                  These benefits are primarily given to low-income households to subsidize their cost of living.  
@@ -84,6 +95,8 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
+    # How much of your current household income would you be willing to pay to increase social benefits towards impoverished people inside the US by around 10%?
+
     pol_agriculture_wtp = models.FloatField(
         label='''In 2020 the US spent approximately $10 billion on subsidies for farmers in the US.
                  These benefits are primarily used to grow crops like corn, soy, and wheat, which are used in processed foods.  
@@ -93,6 +106,9 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
+    # How much of your current household income would you be willing to pay to increase subsidies
+    # towards the US agriculture industry by roughly 10%?
+    
     ##################################################################
     ###################### Hypothesis Checks #########################
     ##################################################################
