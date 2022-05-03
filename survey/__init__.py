@@ -25,6 +25,8 @@ class Player(BasePlayer):
         label='''The average gas price in 2021 in the US was $3.01 per gallon.
                  How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system?
                  Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
+                 # e.g. increase by 2 cents would reduce emissions from private transportation by x percent
+                 # e.g. 1 kg co2 = 1 m^2 rain forest to desert
         min=0,
     )
     climate_wtp_tax = models.FloatField(
@@ -38,7 +40,7 @@ class Player(BasePlayer):
     )  
     # How much of your current household income would you be willing to pay as a carbon tax that 
     #### would be invested in researching green energy technologies?
-    #### would be used to research solar / wind / water turbine energy solutions?
+    #### would be used to research solar / wind / water energy solutions?
 
     # This question is difficult to install. It is vague and asks for something really hard to imagine
     # climate_wtp_tax = models.FloatField(
@@ -108,7 +110,7 @@ class Player(BasePlayer):
     )
     # How much of your current household income would you be willing to pay to increase subsidies
     # towards the US agriculture industry by roughly 10%?
-    
+
     ##################################################################
     ###################### Hypothesis Checks #########################
     ##################################################################
