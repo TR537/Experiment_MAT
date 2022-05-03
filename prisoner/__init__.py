@@ -52,11 +52,7 @@ class Decision(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         set_payoff(player)
-
-
-# class ResultsWaitPage(WaitPage):
-#     after_all_players_arrive = set_payoff
-
+        
 
 class Results(Page):
     @staticmethod
@@ -66,7 +62,6 @@ class Results(Page):
             my_decision=player.cooperate,
             opponent_decision=player.other_coop,
         )
-
 
 
 page_sequence = [Decision, Results]
