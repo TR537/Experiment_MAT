@@ -27,6 +27,10 @@ class Player(BasePlayer):
                  Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
                  # e.g. increase by 2 cents would reduce emissions from private transportation by x percent
                  # e.g. 1 kg co2 = 1 m^2 rain forest to desert
+                 # 1. Demand effect of price increase of gasoline 
+                 # 2. CO2 emissions per liter of gasoline 
+                 # 3. 1. x 2. = reduction in CO2 emissions from tax 
+                 # 4. convert 3. in easy to understand environmental damages
         min=0,
     )
     climate_wtp_tax = models.FloatField(
@@ -35,31 +39,19 @@ class Player(BasePlayer):
                  How much of your current household income would you be willing to pay as part of a carbon tax to finance research
                  that could mitigate further temperature increase?
                  Please enter a percentage between 0 and 100:''',
+                 # 1. saved CO2 emissions if we don't go above 1.5 C compared to projection
+                 # 2. cost of reaching that goal compared to not doing anything
         min=0,
         max=100,
-    )  
-    # How much of your current household income would you be willing to pay as a carbon tax that 
-    #### would be invested in researching green energy technologies?
-    #### would be used to research solar / wind / water energy solutions?
-
-    # This question is difficult to install. It is vague and asks for something really hard to imagine
-    # climate_wtp_tax = models.FloatField(
-    #     label='''Estimated costs from climate change outcomes are around 1% of GDP of the US per year
-    #         (this is around $2 billion) for every degree centigrade of average temperature increase.
-    #         Currently, we are on a projection to reach 2.5 degree centigrade by 2100.
-    #         Assume that successful research in clean energy solutions would lead to reaching the Paris Climate Agreement goal
-    #         of not going above 1.5 degree centigrade temperature increase (i.e. it could save $2 billion per year in the US alone).
-    #         How much of your current household income would you be willing to pay as part of a carbon tax to finance such research?
-    #         Please enter a percentage between 0 and 100:''',
-    #     min=0,
-    #     max=100,
-    # )  # This question is difficult to install. It is vague and asks for something really hard to imagine
+    )
     climate_wtp_flight = models.FloatField(
         label='''On average, flying 100 miles (domestically) cost about $50 in 2020.
                  How much would you be willing to pay on top of the usual price of a plane ticket as part of a carbon tax system?
                  Please enter how many dollars you would be willing to pay on top of the $50 per 100 miles (does not need to be a whole number):''',
-        # Traveling by plane uses comparatively high amounts of fossil fuels. Therefore, it might be sensible to install a carbon tax on flights.
-        # On average a domestic flight in the US in 2020 cost about $250 and was about 500 miles long.
+                 # 1. demand effect of flying
+                 # 2. CO2 emissions per mile flown in the US
+                 # 3. 1. x 2. = reduction in CO2 emissions from tax
+                 # 4. convert 3. in easy to understand environmental damages
         min=0,
     )
     climate_wtp_energy = models.FloatField(
@@ -67,15 +59,10 @@ class Player(BasePlayer):
                  How much of your current household income would you be willing to pay as part of a carbon tax to finance
                  an average government refund of $2,000 per solar system (a 20% subsidy)?
                  Please enter a percentage between 0 and 100:''',
-        # Fossil fuels are a burden for the climate. The US still uses primarily fossil fuels for transportation.
-        # A subsidy on greener energy technologies could help to reduce the use of fossil fuels.
+                 # maybe leave this one out.
         min=0,
         max=100,
     )
-    # How much of your current household income would you be willing to pay
-    #### to pay subidies towards electric car owners?
-    #### to pay subsidies towards residential housing solar energy systems?
-
     # Not Public Goods
     pol_socialsec_wtp = models.FloatField(
         label='''The social security administration provides pensions to retired workers using the taxes you are currently paying.
@@ -86,8 +73,6 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
-    # How much of your current household income would you be willing to pay to increase social security benefits towards retirees by about 10%?
-    
     pol_poor_wtp = models.FloatField(
         label='''In 2018 the US spent approximately $11,000 on social benefits per person.
                  These benefits are primarily given to low-income households to subsidize their cost of living.  
@@ -97,8 +82,6 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
-    # How much of your current household income would you be willing to pay to increase social benefits towards impoverished people inside the US by around 10%?
-
     pol_agriculture_wtp = models.FloatField(
         label='''In 2020 the US spent approximately $10 billion on subsidies for farmers in the US.
                  These benefits are primarily used to grow crops like corn, soy, and wheat, which are used in processed foods.  
@@ -108,9 +91,6 @@ class Player(BasePlayer):
         min=0,
         max=100,
     )
-    # How much of your current household income would you be willing to pay to increase subsidies
-    # towards the US agriculture industry by roughly 10%?
-
     ##################################################################
     ###################### Hypothesis Checks #########################
     ##################################################################
