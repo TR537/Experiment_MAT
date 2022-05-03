@@ -8,8 +8,8 @@ This is a repeated PD game
 
 class C(BaseConstants):
     NAME_IN_URL = 'decision_1'
-    PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 5
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 10
     INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
 
 class Subsession(BaseSubsession):
@@ -75,26 +75,6 @@ class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
 
-    @staticmethod
-    def get_timeout_seconds(player):
-        participant = player.participant
-        session = player.session
-
-        if participant.is_dropout:
-            return 1  # instant timeout, 1 seconds
-        else:
-            return session.min_time
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        participant = player.participant
-
-        if timeout_happened:
-            player.cooperate = False
-            if participant.strike:
-                participant.is_dropout = True
-            else:
-                participant.strike = True
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
@@ -110,26 +90,6 @@ class Results(Page):
             my_decision=player.field_display('cooperate'),
             opponent_decision=opponent.field_display('cooperate'),
         )
-
-    @staticmethod
-    def get_timeout_seconds(player):
-        participant = player.participant
-        session = player.session
-
-        if participant.is_dropout:
-            return 0.1  # instant timeout, 1 seconds
-        else:
-            return session.min_time
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        participant = player.participant
-
-        if timeout_happened:
-            if participant.strike:
-                participant.is_dropout = True
-            else:
-                participant.strike = True
 
 
 
