@@ -60,6 +60,9 @@ def set_payoff(player: Player):
         player.payoff = payoff_matrix_cont[(player.cooperate, player.other_coop)]
         player.other_payoff = payoff_matrix_cont[(player.other_coop, player.cooperate)]
 
+    # Add payoff to participant variable for payment
+    player.participant.payment_other += player.other_payoff.to_real_world_currency(session)
+
 # PAGES
 class Introduction(Page):
     @staticmethod

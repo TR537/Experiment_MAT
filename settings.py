@@ -67,7 +67,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 ),
 )
 
-PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'past_group_id']
+PARTICIPANT_FIELDS = ['treatment', 'finished_rounds', 'past_group_id', 'payment_other']
 SESSION_FIELDS = ['z', 'r', 't', 'r_percent',
                   'payoff_Idef', 'payoff_both_coop', 'payoff_both_defect', 'payoff_Icoop',
                   'payoff_Idef_t', 'payoff_Icoop_t',

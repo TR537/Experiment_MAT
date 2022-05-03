@@ -40,6 +40,7 @@ def creating_session(subsession):
     for player in subsession.get_players():
         participant = player.participant
         participant.treatment = next(treatments)
+        participant.payment_other = 0
     
     # Bonus for answering all questions correctly
     inf_bonus = cu(500)

@@ -1,18 +1,16 @@
 {{ block title }}Thank you{{ endblock }}
 {{ block content }}
 
-    {{if participant.is_dropout}}
-    You have failed to make a decision two times. This has resulted in you dropping out of the study. Please close this window.
-
-    {{else}}
     <div class="panel panel-default" style="margin-bottom:10px">
         <div class="panel-body">
             <p>Thank you for taking part in this study.</p>
-            <p>Please go back to Amazon mTurk and enter the following code in order to receive your fee of {{fee}} plus your bonus of {{bonus}} for a total of <b>{{total}}</b></p>
+            <p>
+                Please go back to Amazon mTurk and enter the following code in order to receive your fee of {{fee}}
+                plus your bonus of {{bonus}} for a total of <b>{{total}}</b>.
+            </p>
             {{redemption_code}}
         </div>
     </div>
-    {{endif}}
 
 {{ endblock }}
 
