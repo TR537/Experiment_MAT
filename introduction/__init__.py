@@ -30,15 +30,13 @@ class Player(BasePlayer):
 def creating_session(subsession):
     session = subsession.session
 
-    # Setting Strikes and Dropouts to false for all participants
-    for p in subsession.get_players():
-        p.participant.strike = False
-        p.participant.is_dropout = False
-
-    # Continuation probability from 6th round on
-    session.cont_prob_percent = 75
-    # Maximum time for making a decision
-    session.min_time = 60
+    # Create balanced treatment groups
+    import itertools
+    treatments = itertools.cycle([True, False])
+    for player in subsession.get_players():
+        participant = player.participant
+        participant.treatment = next(treatments)
+    
     # Bonus for answering all questions correctly
     inf_bonus = cu(500)
     ### Store Bonus in session variable
@@ -68,10 +66,6 @@ def creating_session(subsession):
         'cooperate': 'invest',
         'defect': 'not invest',
     }
-
-    # Discount Factor border values
-    session.delta_min = (1 - session.r) / (1 + session.r)
-    session.delta_risk_dom_min = 1 - session.r
 
 # PAGES
 class Introduction(Page):
