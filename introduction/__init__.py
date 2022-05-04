@@ -51,8 +51,8 @@ def creating_session(subsession):
     }
 
     # Parameters for Payoffs
-    session.z = 200  # initial endowment
-    session.r = 0.2  # interest on investing
+    session.z = 100  # initial endowment
+    session.r = 0.3  # interest on investing
     session.r_percent = int(session.r * 100)
     session.t = int(0.5 * session.z) # tax for treatment game
 

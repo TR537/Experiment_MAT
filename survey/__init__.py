@@ -26,8 +26,8 @@ class Player(BasePlayer):
     climate_wtp_gas = models.FloatField(
         label='''The average gas price in 2021 in the US was $3.01 per gallon.
                  How many cents of an increase in gas price would you be willing to pay as part of a carbon tax system?
-                 For your information: it is estimated that the reduction in carbon emissions from a tax of 3 cents is equivalent
-                 to the amount that is emitted in one year by 40,000 people for heating, cooling and powering their homes.
+                 For your information: the reduction in carbon emissions from a tax of 3 cents would offset enough carbon
+                 to save about 80 football fields of arctic ice from melting during summer.
                  Please enter an integer to indicate the amount of cents you would be willing to pay on top of the $3.01:''',
                  # 1. Demand effect of price increase of gasoline [p.e.d. around -0.3 according to Coglianese2016]
                  # 2. CO2 emissions per liter of gasoline [2.323kg of CO2 per liter of combusted gasoline according to Andersson2019]
@@ -35,6 +35,11 @@ class Player(BasePlayer):
                  # 4. Annual CO2 emissions from gasoline: 11.8562916593 x 10^5 t of CO2
                  # 5. increase of 3 cents (1%) decreases CO2 emissions by 118.562916593 x 10^3 t of CO2
                  # 6. 118,000 t of CO2 are equivalent to heating, cooling, and powering 40,000 people for a full year
+                 # 
+                 # a. 3 sqm of ice for every 1 t of CO2 [according to Notz2016]
+                 # b. based on 4. this makes 355.688749779 x 10^3 sqm of ice disappear (in summer)
+                 # c. a football field is 4'462.272 sqm (excluding end zones)
+                 # d. therefore, this takes away 79.7102350056 football fields
         min=0,
     )
     climate_wtp_tax = models.FloatField(
@@ -42,7 +47,7 @@ class Player(BasePlayer):
                  would save about $2 billion per year in the US alone compared to not doing anything against climate change.
                  For your information: this means if temperatures exceeded 1.5 degrees centigrade above pre-industrial levels, it would cost about $670 per person per year in the US alone to fight climate change.
                  How much of your current household income would you be willing to pay as part of a carbon tax to finance research
-                 that could prevent going above 1.5 degree centigrades?
+                 that could definitely prevent going above 1.5 degree centigrades?
                  Please enter a percentage between 0 and 100:''',
         min=0,
         max=100,
@@ -50,11 +55,14 @@ class Player(BasePlayer):
     climate_wtp_flight = models.FloatField(
         label='''On average, flying 100 miles (domestically) cost about $50 in 2020.
                  How much would you be willing to pay on top of the usual price of a plane ticket as part of a carbon tax system?
-                 For your information: it is estimated that the reduction in carbon emissions from a tax of $1.00 per 100 miles is equivalent
-                 to the amount that is emitted in one year by half a million people for heating, cooling and powering their homes.
+                 For your information: the reduction in carbon emissions from a tax of $1.00 would offset enough carbon
+                 to save about 1,000 football fields of arctic ice from melting during summer.
                  Please enter how many dollars you would be willing to pay on top of the $50 per 100 miles (you are allowed to use decimals):''',
                  # [according to Hofer2010 2% ($1) tax would reduce carbon in US alone by 1.5 million tons of CO2]
                  # 1.5 million tons = heating, cooling, and powering half a million people in the US for a year [according to Goldstein2020]
+                 #
+                 # a. 4.5 million sqm ice saved
+                 # b. therefore, this takes away 1'008.4548857622 football fields
         min=0,
     )
     # climate_wtp_energy = models.FloatField(
