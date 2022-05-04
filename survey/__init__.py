@@ -193,7 +193,7 @@ class Player(BasePlayer):
                  Please try to remember the game and select the statement that best describes what happened in the game.''',
         choices=[[1, '''In the game you were given 200 points every round and if you invested the points,
                         there was a fifty fifty chance that the points would increase or decrease.'''],
-                 [2, '''In the game you played repeatedly with another person.
+                 [2, '''In the game you played repeatedly with other people.
                         If neither invested, then everybody kept their initial amount of points.
                         If both invested, this gave both of you a higher payoff.
                         If only one person invested, then this person got less points, while the not investing person got more points.'''],
