@@ -13,6 +13,7 @@
             Please read the following text thoroughly and answer the questions below.<br>
             If you answer all three questions correctly on the first try, you will get a bonus of <b>{{inf_bonus.first_try}}</b>.<br>
             If you answer them correctly on the second try, you will get a bonus of <b>{{inf_bonus.second_try}}</b>.<br>
+            If you answer them correctly on the third try, you will get a bonus of <b>{{inf_bonus.third_try}}</b>.<br>
             Otherwise you will not get a bonus for this page, but you can still continue the study
             and try to earn the other parts of the bonus.
         {{elif player.round_number == 2}}
@@ -20,7 +21,7 @@
             This is your second try. You can still earn <b>{{inf_bonus.second_try}}</b>.
         {{elif player.round_number == 3}}
             Please re-read the text below and try answering the questions again.<br>
-            This is your third and final try.
+            This is your third and final try. You can still earn <b>{{inf_bonus.third_try}}</b>.<br>
             You will proceed to the rest of the study after the next feedback screen.
         {{endif}}
     </i></p>
@@ -32,7 +33,7 @@
     <p>
         Goods and Services can generally be split into private and public goods. <br>
         Private goods are what you would  normally think of as goods.
-        You can purchase a private good and if you own one itme, nobody else can use it or own it at the same time.
+        You can purchase a private good and if you own one item, nobody else can use it or own it at the same time.
         Common examples are cars, or dishes of food. <br>
         <b>Public goods</b> are different. They are usually free to use and if you use it, someone else can use it alongside you.
         Common examples are <b>national defense</b>, a <b>public drinking fountain</b>, or the <b>environment</b>.

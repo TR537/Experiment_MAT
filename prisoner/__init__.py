@@ -1,5 +1,5 @@
 from otree.api import *
-
+import random
 
 doc = """
 This is a repeated PD game
@@ -8,15 +8,15 @@ This is a repeated PD game
 
 class C(BaseConstants):
     NAME_IN_URL = 'decision_1'
-    PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 5
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 10
     INSTRUCTIONS_TEMPLATE = 'introduction/instructions.html'
 
 class Subsession(BaseSubsession):
     pass
 
 class Group(BaseGroup):
-    treatment = models.BooleanField()
+    pass
 
 
 class Player(BasePlayer):
@@ -25,18 +25,11 @@ class Player(BasePlayer):
         doc="""This player's decision""",
         widget=widgets.RadioSelect,
     )
+    other_coop = models.BooleanField(initial=False)
+    other_payoff = models.CurrencyField()
 
 
 # FUNCTIONS
-def set_payoffs(group: Group):
-    for p in group.get_players():
-        set_payoff(p)
-
-
-def other_player(player: Player):
-    return player.get_others_in_group()[0]
-
-
 def set_payoff(player: Player):
     session = player.session
     payoff_matrix = {
@@ -45,92 +38,34 @@ def set_payoff(player: Player):
         (False, False): session.payoff_matrix['both_defect'],
         (True, False): session.payoff_matrix['I_coop'],
     }
-    other = other_player(player)
-    player.payoff = payoff_matrix[(player.cooperate, other.cooperate)]
+    if random.random() < session.coop_prob[player.round_number-1]:
+        player.other_coop = True
+
+    player.payoff = payoff_matrix[(player.cooperate, player.other_coop)]
+    player.other_payoff = payoff_matrix[(player.other_coop, player.cooperate)]
+    # Add payoff to participant variable for payment
+    if player.cooperate and not player.other_coop:
+        player.participant.payment_other += cu(((1+session.r)*session.z)/2).to_real_world_currency(session)
 
 
 # PAGES
-class GroupingWaitPage(WaitPage):
-    group_by_arrival_time = True
-    body_text = '''You might wait for a while on this waitpage until someone else joins the game.
-                   Please don't get discouraged and don't leave the site. You should still not exceed the 30 minutes and you will be paid at least USD 3.00.'''
-
-    @staticmethod
-    def after_all_players_arrive(group: Group):
-        # save each participant's current group ID so it can be
-        # accessed in the next app.
-        for p in group.get_players():
-            participant = p.participant
-            participant.past_group_id = group.id
-            if (participant.past_group_id % 2) ==0:
-                participant.treatment = True
-            else:
-                participant.treatment = False
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 1
-
 class Decision(Page):
     form_model = 'player'
     form_fields = ['cooperate']
 
     @staticmethod
-    def get_timeout_seconds(player):
-        participant = player.participant
-        session = player.session
-
-        if participant.is_dropout:
-            return 1  # instant timeout, 1 seconds
-        else:
-            return session.min_time
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        participant = player.participant
-
-        if timeout_happened:
-            player.cooperate = False
-            if participant.strike:
-                participant.is_dropout = True
-            else:
-                participant.strike = True
-
-class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoffs
+    def before_next_page(player: Player, timeout_happened):
+        set_payoff(player)
 
 
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        opponent = other_player(player)
         return dict(
-            opponent=opponent,
-            same_choice=player.cooperate == opponent.cooperate,
-            my_decision=player.field_display('cooperate'),
-            opponent_decision=opponent.field_display('cooperate'),
+            same_choice=player.cooperate == player.other_coop,
+            my_decision=player.cooperate,
+            opponent_decision=player.other_coop,
         )
 
-    @staticmethod
-    def get_timeout_seconds(player):
-        participant = player.participant
-        session = player.session
 
-        if participant.is_dropout:
-            return 0.1  # instant timeout, 1 seconds
-        else:
-            return session.min_time
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        participant = player.participant
-
-        if timeout_happened:
-            if participant.strike:
-                participant.is_dropout = True
-            else:
-                participant.strike = True
-
-
-
-page_sequence = [GroupingWaitPage, Decision, ResultsWaitPage, Results]
+page_sequence = [Decision, Results]

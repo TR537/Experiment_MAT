@@ -12,8 +12,12 @@
             You have answered all questions correctly on the second try.<br>
             You get an additional {{payoff}}. <br>
             You can go to the next page.
+        {{elif third_try}}
+            You have answered all questions correctly on the third try.<br>
+            You get an additional {{payoff}}. <br>
+            You can go to the next page.
         {{elif player.round_number == 3}}
-            Unfortunately, you did not answer all questions correctly within the first two tries.<br>
+            Unfortunately, you did not answer all questions correctly within three tries.<br>
             Therefore, you don't get a bonus for this page.
             You can go to the next page.
         {{else}}
