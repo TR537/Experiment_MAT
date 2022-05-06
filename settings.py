@@ -14,17 +14,6 @@ SESSION_CONFIGS = [
                       'payment_info'],
         num_demo_participants=4,
     ),
-    dict(
-        name='pd',
-        display_name="All in one",
-        app_sequence=['introduction',
-                      'information',
-                      'introduction_prisoner',
-                      'prisoner',
-                      'survey',
-                      'payment_info'],
-        num_demo_participants=2,
-    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
