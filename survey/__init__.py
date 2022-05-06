@@ -67,15 +67,6 @@ class Player(BasePlayer):
                  # b. therefore, this takes away 1'008.4548857622 football fields
         min=0,
     )
-    # climate_wtp_energy = models.FloatField(
-    #     label='''Installing an average solar system network on a residential house in the US costs about $10,000.
-    #              How much of your current household income would you be willing to pay as part of a carbon tax to finance
-    #              an average government refund of $2,000 per solar system (a 20% subsidy)?
-    #              Please enter a percentage between 0 and 100:''',
-    #              # maybe leave this one out.
-    #     min=0,
-    #     max=100,
-    # )
     # Not Public Goods
     pol_socialsec_wtp = models.FloatField(
         label='''The social security administration provides pensions to retired workers using the taxes you are currently paying.
