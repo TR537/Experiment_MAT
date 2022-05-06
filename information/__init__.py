@@ -54,6 +54,8 @@ def set_payoff(player: Player):
             player.payoff = session.inf_bonus['first_try']
         elif player.round_number == 2:
             player.payoff = session.inf_bonus['second_try']
+        elif player.round_number == 3:
+            player.payoff = session.inf_bonus['third_try']
     else:
         player.payoff = 0
 
@@ -73,6 +75,7 @@ class InformationIntervention(Page):
             inf_bonus={
                 'first_try': session.inf_bonus['first_try'].to_real_world_currency(session),
                 'second_try': session.inf_bonus['second_try'].to_real_world_currency(session),
+                'third_try': session.inf_bonus['third_try'].to_real_world_currency(session),
             }
         )
 
@@ -82,14 +85,17 @@ class InformationEvaluation(Page):
     @staticmethod
     def vars_for_template(player: Player):
         session = player.session
-        first_try, second_try = False, False
+        first_try, second_try, third_try = False, False, False
         if player.payoff == session.inf_bonus['first_try']:
             first_try = True
         elif player.payoff == session.inf_bonus['second_try']:
             second_try = True
+        elif player.payoff == session.inf_bonus['third_try']:
+            third_try = True
         return dict(
             first_try=first_try,
             second_try=second_try,
+            third_try=third_try,
             inf_prov1=player.inf_prov1,
             inf_prov2=player.inf_prov2,
             inf_prov3=player.inf_prov3,
@@ -121,12 +127,6 @@ class InformationEvaluation(Page):
                           },
             payoff=player.payoff.to_real_world_currency(session),
         )
-    @staticmethod
-    def error_message(player: Player, values):
-        import time
-        wait_time_error = round(player.page_pass_time - time.time())
-        if time.time() < player.page_pass_time:
-            return "You cannot pass this page yet. You have to wait another {} seconds".format(wait_time_error)
     @staticmethod
     def app_after_this_page(player: Player, upcoming_apps):
         if (player.inf_prov1 == 2) and (player.inf_prov2 == 2) and (player.inf_prov3 == 1):

@@ -38,7 +38,7 @@ def set_payoff(player: Player):
         (False, False): session.payoff_matrix['both_defect'],
         (True, False): session.payoff_matrix['I_coop'],
     }
-    if random.random() < session.coop_prob:
+    if random.random() < session.coop_prob[player.round_number-1]:
         player.other_coop = True
 
     player.payoff = payoff_matrix[(player.cooperate, player.other_coop)]

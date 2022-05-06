@@ -13,6 +13,7 @@
             Please read the following text thoroughly and answer the questions below.<br>
             If you answer all three questions correctly on the first try, you will get a bonus of <b>{{inf_bonus.first_try}}</b>.<br>
             If you answer them correctly on the second try, you will get a bonus of <b>{{inf_bonus.second_try}}</b>.<br>
+            If you answer them correctly on the third try, you will get a bonus of <b>{{inf_bonus.third_try}}</b>.<br>
             Otherwise you will not get a bonus for this page, but you can still continue the study
             and try to earn the other parts of the bonus.
         {{elif player.round_number == 2}}
@@ -20,7 +21,7 @@
             This is your second try. You can still earn <b>{{inf_bonus.second_try}}</b>.
         {{elif player.round_number == 3}}
             Please re-read the text below and try answering the questions again.<br>
-            This is your third and final try.
+            This is your third and final try. You can still earn <b>{{inf_bonus.third_try}}</b>.<br>
             You will proceed to the rest of the study after the next feedback screen.
         {{endif}}
     </i></p>

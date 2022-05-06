@@ -49,13 +49,16 @@ def set_payoff(player: Player):
     }
 
     if player.participant.treatment:
-        if random.random() < session.coop_prob_t:
-            player.other_coop = True
+        # After reading through studies, nobody would not choose it. Unless extremely unsocial.
+        # Additionally, this is in the interest of the participants.
+        player.other_coop = True
+        # Set payoffs
         player.payoff = payoff_matrix_treat[(player.cooperate, player.other_coop)]
         player.other_payoff = payoff_matrix_treat[(player.other_coop, player.cooperate)]
         
+        
     else:
-        if random.random() < session.coop_prob:
+        if random.random() < session.coop_prob[player.round_number-1]:
             player.other_coop = True
         player.payoff = payoff_matrix_cont[(player.cooperate, player.other_coop)]
         player.other_payoff = payoff_matrix_cont[(player.other_coop, player.cooperate)]

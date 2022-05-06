@@ -30,9 +30,8 @@ class Player(BasePlayer):
 def creating_session(subsession):
     session = subsession.session
 
-    # Set probability of choosing cooperate for bot
-    session.coop_prob = 0.3
-    session.coop_prob_t = 0.9
+    # Set probability of choosing cooperate for bot [according to Gunnthorsdottir2005]
+    session.coop_prob = [0.4, 0.3, 0.31, 0.28, 0.17, 0.1, 0.1, 0.07, 0.06, 0.04]
 
     # Create balanced treatment groups
     import itertools
@@ -43,11 +42,12 @@ def creating_session(subsession):
         participant.payment_other = 0
     
     # Bonus for answering all questions correctly
-    inf_bonus = cu(500)
+    inf_bonus = cu(1500)
     ### Store Bonus in session variable
     session.inf_bonus = {
         'first_try': inf_bonus,
-        'second_try': inf_bonus/2,
+        'second_try': inf_bonus*2/3,
+        'third_try': inf_bonus/3,
     }
 
     # Parameters for Payoffs
