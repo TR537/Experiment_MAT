@@ -37,6 +37,10 @@
 
     {{ next_button }}
 
-    {{ include C.INSTRUCTIONS_TEMPLATE_T }}
+    {{if participant.treatment}}
+    {{include C.INSTRUCTIONS_TEMPLATE_T}}
+    {{else}}
+    {{include C.INSTRUCTIONS_TEMPLATE}}
+    {{endif}}
 
 {{ endblock }}

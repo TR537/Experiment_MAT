@@ -105,31 +105,7 @@ class Player(BasePlayer):
     ##################################################################
     ####################### Attention Checks #########################
     ##################################################################
-    att_check1 = models.BooleanField(
-        choices=[[False, "1 - Strongly Democrat"],
-                 [True, "2 - Democrat"],
-                 [False, "3 - Independent, lean Democrat"],
-                 [False, "4 - Independent"],
-                 [False, "5 - Independent, lean Republican"],
-                 [False, "6 - Republican"],
-                 [False, "7 - Strongly Republican"],
-                 ],
-        label='We are using this question to check your attention. Please select “Democrat”.',
-        widget=widgets.RadioSelect,
-    )
-    att_check2 = models.BooleanField(
-        choices=[[False, "1 - Strongly Democrat"],
-                 [False, "2 - Democrat"],
-                 [False, "3 - Independent, lean Democrat"],
-                 [False, "4 - Independent"],
-                 [False, "5 - Independent, lean Republican"],
-                 [True, "6 - Republican"],
-                 [False, "7 - Strongly Republican"],
-                 ],
-        label='We are using this question to check your attention. Please select “Republican”.',
-        widget=widgets.RadioSelect,
-    )
-    att_check3 = models.FloatField(
+    att_check1 = models.FloatField(
         label='We are using this question to check your attention. Please enter 2022.',
     )
     ##################################################################
@@ -223,7 +199,7 @@ class Survey(Page):
     form_model = 'player'
     items = ['climate_wtp_gas', 'climate_wtp_tax', 'climate_wtp_flight',  # WTP climate
              'pol_socialsec_wtp', 'pol_poor_wtp', 'pol_agriculture_wtp',  # WTP other policies
-             'att_check3',  # checking if participant is paying attention
+             'att_check1',  # checking if participant is paying attention
              ]
     random.shuffle(items)  # shuffling into random order
     items = items + ['inf_ret1', 'inf_ret2', 'hyp']
