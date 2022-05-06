@@ -226,7 +226,7 @@ class Survey(Page):
              'att_check3',  # checking if participant is paying attention
              ]
     random.shuffle(items)  # shuffling into random order
-    items = items + ['inf_ret1', 'inf_ret2']
+    items = items + ['inf_ret1', 'inf_ret2', 'hyp']
     form_fields = items
 
 
