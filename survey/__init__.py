@@ -43,18 +43,20 @@ class Player(BasePlayer):
         min=0,
     )
     climate_wtp_tax = models.FloatField(
-        label='''Reaching the Paris Climate Agreement goal of not going above 1.5 degree centigrade temperature increase globally
-                 would save about $2 billion per year in the US alone compared to not doing anything against climate change.
-                 For your information: this means if temperatures exceeded 1.5 degrees centigrade above pre-industrial levels, it would cost about $670 per person per year in the US alone to fight climate change.
+        label='''The Paris Climate Agreement has set a goal of not going above 1.5 degree centigrade temperature increase globally
+                 compared to pre-industrial levels.
+                 For your information: Should we fail to reach that goal, it would cost about $670 per person per year in the US alone to fight climate change.
                  How much of your current household income would you be willing to pay as part of a carbon tax to finance research
                  that could definitely prevent going above 1.5 degree centigrades?
                  Please enter a percentage between 0 and 100:''',
+                 # 2 billion $ in the US alone
         min=0,
         max=100,
     )
     climate_wtp_flight = models.FloatField(
         label='''On average, flying 100 miles (domestically) cost about $50 in 2020.
                  How much would you be willing to pay on top of the usual price of a plane ticket as part of a carbon tax system?
+                 This tax would be raised on every flight, not just the ones you book.
                  For your information: the reduction in carbon emissions from a tax of $1.00 would offset enough carbon
                  to save about 1,000 football fields of arctic ice from melting during summer.
                  Please enter how many dollars you would be willing to pay on top of the $50 per 100 miles (you are allowed to use decimals):''',
