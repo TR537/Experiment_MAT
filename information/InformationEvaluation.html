@@ -5,23 +5,29 @@
         Thank you for answering the questions. You can read the feedback to your answers below. <br>
 
         {{if first_try}}
-            You have answered all questions correctly on the first try.<br>
+            <p style="color:#59ff00" ;>
+                You have answered all questions correctly on the first try.
+            </p>
             You get an additional {{payoff}}. <br>
             You can go to the next page.
         {{elif second_try}}
-            You have answered all questions correctly on the second try.<br>
+            <p style="color:#59ff00" ;>
+                You have answered all questions correctly on the second try.
+            </p>
             You get an additional {{payoff}}. <br>
             You can go to the next page.
         {{elif third_try}}
-            You have answered all questions correctly on the third try.<br>
+            <p style="color:#59ff00" ;>
+                You have answered all questions correctly on the third try.
+            </p>
             You get an additional {{payoff}}. <br>
             You can go to the next page.
         {{elif player.round_number == 3}}
-            Unfortunately, you did not answer all questions correctly within three tries.<br>
+            <b>Unfortunately, you did not answer all questions correctly within three tries.</b> <br>
             Therefore, you don't get a bonus for this page.
             You can go to the next page.
         {{else}}
-            You did not answer all questions correctly.<br>
+            <b>You did not answer all questions correctly.</b> <br>
             Please read the feedback and try again.<br>
             This was your
             {{if player.round_number == 1}}first
@@ -47,16 +53,14 @@
                 You have answered question 1 wrong.
             </p>
             <p>
-                Here is the reason why:<br>
-
                 You chose statement
 
                 {{ if inf_prov1 == 1 }}
-                    1: People tend to pay too much for public goods. It becomes hard to redistribute the excess funding. <br>
-                    {{ explanation1.1 }}
+                    1: People tend to pay too much for public goods. It becomes hard to redistribute the excess funding.
+                    <p>{{ explanation1.1 }}</p>
                 {{ else }}
-                    3: It is hard to distribute the public good to everybody. <br>
-                    {{ explanation1.3 }}
+                    3: It is hard to distribute the public good to everybody.
+                    <p>{{ explanation1.3 }}</p>
                 {{ endif }}
             </p>
 
@@ -79,16 +83,14 @@
                 You have answered question 2 wrong.
             </p>
             <p>
-                Here is the reason why:<br>
-
                 You chose option
 
                 {{ if inf_prov2 == 1 }}
-                    1: Cell Phone Service <br>
-                    {{ explanation2.1 }}
+                    1: Cell Phone Service
+                    <p>{{ explanation2.1 }}</p>
                 {{ else }}
-                    3: Cars <br>
-                    {{ explanation2.3 }}
+                    3: Cars
+                    <p>{{ explanation2.3 }}</p>
                 {{ endif }}
             </p>
 
@@ -111,18 +113,16 @@
                 You have answered question 3 wrong.
             </p>
             <p>
-                Here is the reason why:<br>
-
                 You chose statement
 
                 {{ if inf_prov3 == 2 }}
                     2: In the real world it is not possible to increase public good contributions.
-                    Private organization would make more sense anyways since it is more efficient. <br>
-                    {{ explanation3.2 }}
+                    Private organization would make more sense anyways since it is more efficient.
+                    <p>{{ explanation3.2 }}</p>
                 {{ else }}
                     3: Not doing anything, since free markets balance themselves.
-                    Therefore, any level of public good is actually optimal if it is determined by the free market. <br>
-                    {{ explanation3.3 }}
+                    Therefore, any level of public good is actually optimal if it is determined by the free market.
+                    <p>{{ explanation3.3 }}</p>
                 {{ endif }}
             </p>
 
