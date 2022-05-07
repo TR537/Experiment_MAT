@@ -24,8 +24,8 @@ SESSION_CONFIGS = [
 SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=0.0005, participation_fee=3.00, doc="",
         mturk_hit_settings=dict(
-            keywords='bonus, study, experiment, decision, gamr, survey',
-            title='Decision task against opponent - earn about $5 in 30 minutes',
+            keywords=['bonus, study, experiment, decision, gamr, survey'],
+            title='Decision task and survey - earn about $5 in 30 minutes',
             description='In this study you will take part in an online multiplayer decision task. $3 for sure, plus bonus ($2 on average). Expected to take 30 minutes',
             frame_height=500,
             template='global/mturk_template.html',
@@ -47,13 +47,12 @@ SESSION_CONFIG_DEFAULTS = dict(
                     'Comparator': "EqualTo",
                     'LocaleValues': [{'Country': "US"}]
                 },
-                # {
-                #     'QualificationTypeId': "2F1QJWKUDD8XADTFD2Q0G6UTO95ALH", # Masters
-                #     'Comparator': "Exists",
-                # },
+                {
+                    'QualificationTypeId': "3F4AIAZK5VB2TOFRP1L4G7PUTXVZ39",
+                    'Comparator': "DoesNotExist",
+                },
             ]
-            # grant_qualification_id='YOUR_QUALIFICATION_ID_HERE', # to prevent retakes
-),
+        ),
 )
 
 PARTICIPANT_FIELDS = ['treatment', 'payment_other']
@@ -95,3 +94,6 @@ Here are some oTree games.
 SECRET_KEY = '4143000320156'
 
 INSTALLED_APPS = ['otree', 'otreeutils']
+
+AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
